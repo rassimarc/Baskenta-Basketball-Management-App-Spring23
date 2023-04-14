@@ -9,6 +9,10 @@ urlpatterns = [
     path('communication/', views.communication, name='communication'),
     path('management/', views.management, name='management'),
     path('login/', views.login_view, name='login'),
-    path('signup/', views.signup, name='signup'),
+    path('logout/', views.logout_view, name='logout'),
+    path('signupplayer/', views.signup_player, name='signup_player'),
+    path('signupmanager/', views.signup_manager, name='signup_manager'),
     path('performance/', views.performance, name='performance'),
+    path('myuser/', views.myuser, name="myuser"),
+    path('changepassword/', views.change_password, name="changepassword")
 ]

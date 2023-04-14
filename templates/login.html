@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block title %}
+  Login
+{% endblock %}
+
 {% block content %}
   <h2>Login</h2>
   <form method="post">
@@ -7,4 +11,5 @@
     {{ form.as_p }}
     <button type="submit">Login</button>
   </form>
+  <p> Don't have an account? <a href="{% url 'signup_player' %}">Sign up as a player</a> <a href="{% url 'signup_manager' %}">Sign up as a manager</a></p>
 {% endblock %}
