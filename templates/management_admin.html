@@ -1,0 +1,17 @@
+{% extends 'base_admin.html' %}
+
+{% block title %} 
+  Management 
+{% endblock %}
+
+{% block content %}
+  <h1>Management</h1>
+  {% for team, players in teams.items %}
+    <h2>{{ team }}</h2>
+    <ul>
+      {% for player in players %}
+        <li>{{ player.name }}</li>
+      {% endfor %}
+    </ul>
+  {% endfor %}
+{% endblock %}

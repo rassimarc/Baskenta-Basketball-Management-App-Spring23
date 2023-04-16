@@ -1,0 +1,25 @@
+{% extends 'base_player.html' %}
+
+{% block title %}
+  Communication
+{% endblock %}
+
+{% block content %}
+  <h1>Communication</h1>
+  <form method="post">
+    {% csrf_token %}
+    <div>
+      <label for="recipient">Recipient:</label>
+      <select name="recipient" id="recipient">
+        {% for user in users %}
+          <option value="{{ user.id }}">{{ user.username }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div>
+      <label for="message">Message:</label>
+      <textarea name="message" id="message" cols="30" rows="10"></textarea>
+    </div>
+    <button type="submit">Send</button>
+  </form>
+{% endblock %}

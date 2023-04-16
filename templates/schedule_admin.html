@@ -1,0 +1,21 @@
+{% extends 'base_admin.html' %}
+
+{% block content %}
+  <h1>Performance</h1>
+  <table>
+    <tr>
+      <th>Player Name</th>
+      <th>Performance Metric 1</th>
+      <th>Performance Metric 2</th>
+      <th>Performance Metric 3</th>
+    </tr>
+    {% for player in players %}
+      <tr>
+        <td>{{ player.name }}</td>
+        <td contenteditable>{{ player.metric1 }}</td>
+        <td contenteditable>{{ player.metric2 }}</td>
+        <td contenteditable>{{ player.metric3 }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}
