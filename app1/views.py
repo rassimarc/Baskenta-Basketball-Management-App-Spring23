@@ -2,6 +2,7 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect
 from app1.models import *
+from .forms import TeamFormAdmin
 def home(request):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -101,7 +102,7 @@ def performance(request):
         return render(request, 'performance_manager.html')
     elif request.user.profile.usertype == "admin":
         return render(request, 'performance_admin.html')
-from .forms import SignupForm
+from .forms import SignupForm, ResetPasswordForm
 
 def signup_player(request):
     if request.method == 'POST':
@@ -109,7 +110,7 @@ def signup_player(request):
         if form.is_valid():
             # Save the user's information to the database
             user = form.save()
-            Profile.objects.create(usertype="Player",user=user)
+            profile = Profile.objects.create(usertype="Player",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),favorite_fictional_character=form.cleaned_data.get('favorite_fictional_character'))
             user.profile.save()
             # Redirect the user to the login page
             return redirect('login')
@@ -122,10 +123,47 @@ def signup_manager(request):
         if form.is_valid():
             # Save the user's information to the database
             user = form.save()
-            Profile.objects.create(usertype="Manager",user=user)
+            Profile.objects.create(usertype="Manager",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),favorite_fictional_character=form.cleaned_data.get('favorite_fictional_character'))
             user.profile.save()
+
             # Redirect the user to the login page
             return redirect('login')
     else:
         form = SignupForm()
     return render(request, 'signup_manager.html', {'form': form})
+def delete_account(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    request.user.profile.delete()
+    request.user.delete()
+    return redirect("login")
+def forgot_password(request):
+    if request.method == 'POST':
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            new_password = form.cleaned_data.get('new_password')
+            user = User.objects.get(username=username)
+            if user is not None:
+                if user.profile.favorite_book == form.cleaned_data.get('favorite_book') and user.profile.favorite_food == form.cleaned_data.get('favorite_food') and user.profile.favorite_holiday == form.cleaned_data.get('favorite_holiday') and user.profile.favorite_fictional_character == form.cleaned_data.get('favorite_fictional_character'):
+                    user.set_password(new_password)
+                    user.save()
+                    return redirect("login")
+    else:
+        form = ResetPasswordForm()
+    return render(request, 'forgotpassword.html', {'form': form})
+
+def add_team(request):
+	submitted = False
+	if request.method == "POST":
+			form = TeamFormAdmin(request.POST)
+			if form.is_valid():
+					form.save()
+					return 	redirect('management')	
+	else:
+		# Just Going To The Page, Not Submitting 
+		form = TeamFormAdmin
+		if 'submitted' in request.GET:
+			submitted = True
+
+	return render(request, 'add_team.html', {'form':form, 'submitted':submitted})

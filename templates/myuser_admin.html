@@ -11,4 +11,5 @@
   <h3>Email: {{user.email}}</h3> 
   <p>Session started at {{user.last_login}}</p>
   <a href="{% url 'changepassword' %}">Change password</a>
+  <a href="{% url 'deleteaccount' %}">Delete account</a>
 {% endblock %}
