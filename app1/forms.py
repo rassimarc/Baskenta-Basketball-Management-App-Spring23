@@ -2,6 +2,10 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
+from django.forms import ModelForm
+from .models import Team
+
+
 class SignupForm(UserCreationForm):
     email = forms.EmailField(max_length=200, help_text='Required')
     first_name = forms.CharField(max_length=30, required=True, help_text='Required')
@@ -21,3 +25,19 @@ class ResetPasswordForm(forms.Form):
     favorite_food = forms.CharField(max_length=30, required=True, help_text='Required')
     favorite_holiday = forms.CharField(max_length=30, required=True, help_text='Required')
     favorite_fictional_character = forms.CharField(max_length=30, required=True, help_text='Required')
+
+# Admin SuperUser Event Form
+class TeamFormAdmin(ModelForm):
+	class Meta:
+		model = Team
+		fields = ('name', 'coach', 'players')
+		labels = {
+			'name': '',
+			'caoch': 'Coach',
+			'players': 'Players',
+		}
+		widgets = {
+			'name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Event Name'}),
+			'coach': forms.Select(attrs={'class':'form-select', 'placeholder':'Coach'}),
+			'players': forms.SelectMultiple(attrs={'class':'form-control', 'placeholder':'Players'}),
+		}

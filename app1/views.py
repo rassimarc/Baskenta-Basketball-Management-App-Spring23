@@ -2,6 +2,7 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect
 from app1.models import *
+from .forms import TeamFormAdmin
 def home(request):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -151,3 +152,18 @@ def forgot_password(request):
     else:
         form = ResetPasswordForm()
     return render(request, 'forgotpassword.html', {'form': form})
+
+def add_team(request):
+	submitted = False
+	if request.method == "POST":
+			form = TeamFormAdmin(request.POST)
+			if form.is_valid():
+					form.save()
+					return 	redirect('management')	
+	else:
+		# Just Going To The Page, Not Submitting 
+		form = TeamFormAdmin
+		if 'submitted' in request.GET:
+			submitted = True
+
+	return render(request, 'add_team.html', {'form':form, 'submitted':submitted})
