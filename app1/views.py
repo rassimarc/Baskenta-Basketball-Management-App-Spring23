@@ -40,15 +40,16 @@ def communication(request):
     elif request.user.profile.usertype == "Manager":
         return render(request, 'communication_manager.html')
 def management(request):
+    teams=Team.objects.all()	
     if not request.user.is_authenticated:
         return redirect("login")
     if request.user.profile.usertype == "Player":
-        return render(request, 'management_player.html')
-    if request.user.profile.usertype == "Manager":
-        teams=Team.objects.all()	
-        return render(request, 'management_manager.html', {'teams':teams})
+        return render(request, 'management_player.html', {'teams':teams})
     if request.user.profile.usertype == "Coach":
-        return render(request, 'management_coach.html')
+        return render(request, 'management_coach.html', {'teams':teams})
+    if request.user.profile.usertype == "Manager":
+        return render(request, 'management_manager.html', {'teams':teams})
+
 def logout_view(request):
     logout(request)
     return redirect('login')

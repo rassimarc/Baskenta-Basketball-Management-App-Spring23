@@ -1,17 +1,18 @@
-{% extends 'base_player.html' %}
-
-{% block title %} 
-  Management 
-{% endblock %}
+{% extends 'base_coach.html' %}
 
 {% block content %}
-  <h1>Management</h1>
-  {% for team, players in teams.items %}
-    <h2>{{ team }}</h2>
-    <ul>
-      {% for player in players %}
-        <li>{{ player.name }}</li>
-      {% endfor %}
-    </ul>
+  <h1>Team List</h1>
+  <ul>
+  {% for team in teams %}
+    {% for player in team.players.all %}
+      {% if player.user.username == user.username %}
+        <li>
+          <strong>Team:</strong> {{ team.name }}<br>
+          <strong>Coach:</strong> {{ team.coach }}<br>
+          <strong>Players:</strong> {{ team.players.all|join:", " }}<br>
+        </li>
+      {% endif %}
+    {% endfor %} 
   {% endfor %}
+  </ul>
 {% endblock %}
