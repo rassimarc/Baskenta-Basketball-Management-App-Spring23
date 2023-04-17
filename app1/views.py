@@ -45,7 +45,8 @@ def management(request):
     if request.user.profile.usertype == "Player":
         return render(request, 'management_player.html')
     if request.user.profile.usertype == "Manager":
-        return render(request, 'management_manager.html')
+        teams=Team.objects.all()	
+        return render(request, 'management_manager.html', {'teams':teams})
     if request.user.profile.usertype == "Admin":
         return render(request, 'management_admin.html')
 def logout_view(request):
