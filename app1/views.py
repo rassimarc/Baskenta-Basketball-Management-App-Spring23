@@ -10,7 +10,7 @@ def home(request):
        return render(request, 'home_player.html')
     if request.user.profile.usertype == "Coach":
        return render(request, 'home_coach.html')
-    if request.user.profile.usertype == "Admin":
+    if request.user.profile.usertype == "Manager":
        return render(request, 'home_admin.html')
 def aboutus(request):
     if not request.user.is_authenticated:
@@ -19,8 +19,8 @@ def aboutus(request):
         return render(request, 'aboutus_player.html')
     elif request.user.profile.usertype == "Coach":
         return render(request, 'aboutus_coach.html')
-    elif request.user.profile.usertype == "Admin":
-        return render(request, 'aboutus_admin.html')
+    elif request.user.profile.usertype == "Manager":
+        return render(request, 'aboutus_manager.html')
 def schedule(request):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -28,8 +28,8 @@ def schedule(request):
         return render(request, 'schedule_player.html')
     elif request.user.profile.usertype == "Coach":
         return render(request, 'schedule_coach.html')
-    elif request.user.profile.usertype == "Admin":
-        return render(request, 'schedule_admin.html')
+    elif request.user.profile.usertype == "Manager":
+        return render(request, 'schedule_manager.html')
 def communication(request):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -37,8 +37,8 @@ def communication(request):
         return render(request, 'communication_player.html')
     elif request.user.profile.usertype == "Coach":
         return render(request, 'communication_coach.html')
-    elif request.user.profile.usertype == "Admin":
-        return render(request, 'communication_admin.html')
+    elif request.user.profile.usertype == "Manager":
+        return render(request, 'communication_manager.html')
 def management(request):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -47,8 +47,8 @@ def management(request):
     if request.user.profile.usertype == "Coach":
         teams=Team.objects.all()	
         return render(request, 'management_coach.html', {'teams':teams})
-    if request.user.profile.usertype == "Admin":
-        return render(request, 'management_admin.html')
+    if request.user.profile.usertype == "Manager":
+        return render(request, 'management_manager.html')
 def logout_view(request):
     logout(request)
     return redirect('login')
@@ -68,8 +68,8 @@ def change_password(request):
         return render(request, 'changepassword_player.html', {'form': form})
     elif request.user.profile.usertype == "Coach":
         return render(request, 'changepassword_coach.html', {'form': form})
-    elif request.user.profile.usertype == "Admin":
-        return render(request, 'changepassword_admin.html', {'form': form})
+    elif request.user.profile.usertype == "Manager":
+        return render(request, 'changepassword_manager.html', {'form': form})
 def myuser(request):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -77,8 +77,8 @@ def myuser(request):
         return render(request, 'myuser_player.html')
     elif request.user.profile.usertype == "Coach":
         return render(request, 'myuser_coach.html')
-    elif request.user.profile.usertype == "Admin":
-        return render(request, 'myuser_admin.html')
+    elif request.user.profile.usertype == "Manager":
+        return render(request, 'myuser_manager.html')
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -101,8 +101,8 @@ def performance(request):
         return render(request, 'performance_player.html')
     elif request.user.profile.usertype == "Coach":
         return render(request, 'performance_coach.html')
-    elif request.user.profile.usertype == "admin":
-        return render(request, 'performance_admin.html')
+    elif request.user.profile.usertype == "Manager":
+        return render(request, 'performance_manager.html')
 from .forms import SignupForm, ResetPasswordForm
 
 def signup_player(request):
@@ -132,6 +132,21 @@ def signup_coach(request):
     else:
         form = SignupForm()
     return render(request, 'signup_coach.html', {'form': form})
+
+def signup_manager(request):
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            # Save the user's information to the database
+            user = form.save()
+            Profile.objects.create(usertype="Manager",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),favorite_fictional_character=form.cleaned_data.get('favorite_fictional_character'))
+            user.profile.save()
+
+            # Redirect the user to the login page
+            return redirect('login')
+    else:
+        form = SignupForm()
+    return render(request, 'signup_manager.html', {'form': form})
 def delete_account(request):
     if not request.user.is_authenticated:
         return redirect("login")

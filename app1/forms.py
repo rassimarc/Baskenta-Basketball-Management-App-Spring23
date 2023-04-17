@@ -33,7 +33,7 @@ class TeamFormAdmin(ModelForm):
 		fields = ('name', 'coach', 'players')
 		labels = {
 			'name': '',
-			'caoch': 'Coach',
+			'coach': 'Coach',
 			'players': 'Players',
 		}
 		widgets = {
