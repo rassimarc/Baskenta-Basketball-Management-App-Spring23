@@ -154,17 +154,38 @@ def forgot_password(request):
         form = ResetPasswordForm()
     return render(request, 'forgotpassword.html', {'form': form})
 
-def add_team(request):
-	submitted = False
-	if request.method == "POST":
-			form = TeamFormAdmin(request.POST)
-			if form.is_valid():
-					form.save()
-					return 	redirect('management')	
-	else:
-		# Just Going To The Page, Not Submitting 
-		form = TeamFormAdmin
-		if 'submitted' in request.GET:
-			submitted = True
+from django.shortcuts import get_object_or_404
+from django.http import Http404
 
-	return render(request, 'add_team.html', {'form':form, 'submitted':submitted})
+def add_team(request):
+    submitted = False
+    if request.method == "POST":
+        form = TeamFormAdmin(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            if Team.objects.filter(name=name).exists():
+                form.add_error('name', 'A team with this name already exists.')
+            else:
+                form.save()
+                return redirect('management')    
+    else:
+        form = TeamFormAdmin()
+        if 'submitted' in request.GET:
+            submitted = True
+
+    return render(request, 'add_team.html', {'form': form, 'submitted': submitted})
+
+def update_team(request, team_name):
+	team = Team.objects.get(name=team_name)
+	form = TeamFormAdmin(request.POST or None, request.FILES or None, instance=team)
+	if form.is_valid():
+		form.save()
+		return redirect('management')
+	return render(request, 'update_team.html', 
+		{'team': team,
+		'form':form})
+
+def delete_team(request, team_name):
+	team = Team.objects.get(name=team_name)
+	team.delete()
+	return redirect('management')		
