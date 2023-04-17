@@ -11,7 +11,7 @@ def home(request):
     if request.user.profile.usertype == "Coach":
        return render(request, 'home_coach.html')
     if request.user.profile.usertype == "Manager":
-       return render(request, 'home_admin.html')
+       return render(request, 'home_manager.html')
 def aboutus(request):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -44,11 +44,11 @@ def management(request):
         return redirect("login")
     if request.user.profile.usertype == "Player":
         return render(request, 'management_player.html')
-    if request.user.profile.usertype == "Coach":
-        teams=Team.objects.all()	
-        return render(request, 'management_coach.html', {'teams':teams})
     if request.user.profile.usertype == "Manager":
-        return render(request, 'management_manager.html')
+        teams=Team.objects.all()	
+        return render(request, 'management_manager.html', {'teams':teams})
+    if request.user.profile.usertype == "Coach":
+        return render(request, 'management_coach.html')
 def logout_view(request):
     logout(request)
     return redirect('login')
