@@ -1,0 +1,10 @@
+{% extends 'base_player.html' %}
+
+{% block content %}
+  <h1>Update Profile</h1>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update Profile</button>
+  </form>
+{% endblock content %}

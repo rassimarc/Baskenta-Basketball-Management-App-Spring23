@@ -2,7 +2,7 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.shortcuts import render, redirect
 from app1.models import *
-from .forms import TeamFormAdmin
+from .forms import *
 def home(request):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -204,4 +204,19 @@ def update_team(request, team_name):
 def delete_team(request, team_name):
 	team = Team.objects.get(name=team_name)
 	team.delete()
-	return redirect('management')		
+	return redirect('management')	
+
+def Edit_Personal_Info(request):
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('myuser')
+    else:
+        form = UserUpdateForm(instance=request.user)
+    if request.user.profile.usertype == "Player":
+        return render(request, 'Edit_Personal_Info_player.html', {'form': form})
+    elif request.user.profile.usertype == "Coach":
+        return render(request, 'Edit_Personal_Info_coach.html', {'form': form})
+    elif request.user.profile.usertype == "Manager":
+        return render(request, 'Edit_Personal_Info_manager.html', {'form': form})	
