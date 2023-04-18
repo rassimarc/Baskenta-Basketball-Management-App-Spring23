@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 
 from django.forms import ModelForm
@@ -33,7 +33,7 @@ class TeamFormAdmin(ModelForm):
 		fields = ('name', 'coach', 'players')
 		labels = {
 			'name': '',
-			'coach': 'Coach',
+			'caoch': 'Coach',
 			'players': 'Players',
 		}
 		widgets = {
@@ -41,3 +41,11 @@ class TeamFormAdmin(ModelForm):
 			'coach': forms.Select(attrs={'class':'form-select', 'placeholder':'Coach'}),
 			'players': forms.SelectMultiple(attrs={'class':'form-control', 'placeholder':'Players'}),
 		}
+
+
+class UserUpdateForm(UserChangeForm):
+    password = None
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'first_name', 'last_name')
+    

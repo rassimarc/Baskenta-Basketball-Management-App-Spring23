@@ -2,15 +2,21 @@
 
 {% block content %}
   <h1>Team List</h1>
+  <a href="{% url 'add_team' %}">Create Team</a>
   <ul>
   {% for team in teams %}
-    {% if team.coach.user.username == user.username %}
-      <li>
-        <strong>Team:</strong> {{ team.name }}<br>
-        <strong>Coach:</strong> {{ team.coach }}<br>
-        <strong>Players:</strong> {{ team.players.all|join:", " }}<br>
-      </li>
-    {% endif %}
+    <li>
+      <strong>Team:</strong> {{ team.name }}<br>
+      <strong>Coach:</strong> {{ team.coach }}<br>
+      <strong>Players:</strong> {{ team.players.all|join:", " }}<br>
+      {% if user.is_authenticated %}
+      <div class="card-footer text-muted">
+        <a href="{% url 'delete_team' team.name %}" class="btn btn-outline-danger btn-sm">Delete Team</a>            
+        <a href="{% url 'update_team' team.name %}" class="btn btn-outline-danger btn-sm">Edit Team</a> 
+      </div>
+  {% endif %}
+    </li>
   {% endfor %}
+
   </ul>
 {% endblock %}
