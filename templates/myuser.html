@@ -6,7 +6,13 @@
 
 {% block content %}
   <h1>{{user.username}}</h1>
+  {% if user.profile.usertype == "Player"%}
+  <h1>Player</h1>
+  {% elif user.profile.usertype == "Manager"%}
+  <h1>Manager</h1>
+  {% elif user.profile.usertype == "Coach"%}
   <h1>Coach</h1>
+  {% endif%}  
   <h2>{{user.get_full_name}}</h2>
   <h3>Email: {{user.email}}</h3> 
   <p>Session started at {{user.last_login}}</p>
