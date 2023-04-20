@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.shortcuts import render, redirect
 from app1.models import *
 from .forms import *
+from django.contrib import messages
+
 def home(request):
     if not request.user.is_authenticated:
         return redirect("login")
@@ -148,12 +150,27 @@ def signup_manager(request):
     else:
         form = SignupForm()
     return render(request, 'signup_manager.html', {'form': form})
+
 def delete_account(request):
     if not request.user.is_authenticated:
         return redirect("login")
-    request.user.profile.delete()
-    request.user.delete()
-    return redirect("login")
+    
+    if request.method == "POST":
+        if request.POST.get("confirm") == "yes":
+            request.user.profile.delete()
+            request.user.delete()
+            messages.success(request, "Your account has been deleted successfully.")
+            return redirect("login")
+        else:
+            return redirect("myuser")    
+     
+    if request.user.profile.usertype == "Player":
+        return render(request, 'confirm_delete_player.html')
+    elif request.user.profile.usertype == "Coach":
+        return render(request, 'confirm_delete_coach.html')
+    elif request.user.profile.usertype == "Manager":
+        return render(request, 'confirm_delete_manager.html') 
+
 def forgot_password(request):
     if request.method == 'POST':
         form = ResetPasswordForm(request.POST)
@@ -201,10 +218,21 @@ def update_team(request, team_name):
 		{'team': team,
 		'form':form})
 
-def delete_team(request, team_name):
-	team = Team.objects.get(name=team_name)
-	team.delete()
-	return redirect('management')	
+def delete_team(request,team_name):
+    if request.method == "POST":
+        if request.POST.get("confirm") == "yes":
+            team = Team.objects.get(name=team_name)
+            team.delete()
+            return redirect('management')
+        else:
+            return redirect("management")    
+     
+    if request.user.profile.usertype == "Player":
+        return render(request, 'confirm_delete_team_player.html')
+    elif request.user.profile.usertype == "Coach":
+        return render(request, 'confirm_delete_team_coach.html')
+    elif request.user.profile.usertype == "Manager":
+        return render(request, 'confirm_delete_team_manager.html')	
 
 def Edit_Personal_Info(request):
     if request.method == 'POST':
