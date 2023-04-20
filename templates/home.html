@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}My Basketball Management App{% endblock %}
+
+{% block content %}
+  <header>
+    <h1>Welcome to My Basketball Management App</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="{% url 'aboutus' %}">About Us</a></li>
+        <li><a href="{% url 'communication' %}">Contact Us</a></li>
+        <li><a href="{% url 'logout' %}">Log Out</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <h2>Manage Your Basketball Team with Ease</h2>
+      <p>Our app provides everything you need to manage your basketball team, from scheduling games to tracking stats and more.</p>
+      <a href="{% url 'aboutus' %}" class="cta">Learn More</a>
+    </section>
+    <section class="features">
+      <h3>Features</h3>
+      <ul>
+        <li>Game Scheduling</li>
+        <li>Player Management</li>
+        <li>Stat Tracking</li>
+        <li>Team Communication</li>
+      </ul>
+    </section>
+    <section class="testimonials">
+      <h3>What Our Users Say</h3>
+      <blockquote>
+        "This app has been a game-changer for our team. It's easy to use and has everything we need to stay organized and competitive." - John, Coach
+      </blockquote>
+      <blockquote>
+        "I love using this app to keep track of my stats and see how I'm improving over time." - Sarah, Player
+      </blockquote>
+    </section>
+    <section class="social">
+      <h3>Follow Us on Social Media</h3>
+      <ul>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">Instagram</a></li>
+      </ul>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2023 My Basketball Management App</p>
+  </footer>
+{% endblock %}

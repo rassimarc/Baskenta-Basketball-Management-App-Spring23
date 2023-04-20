@@ -1,19 +1,22 @@
-{% extends 'base_manager.html' %}
-
-{% block title %} 
-  Management 
-{% endblock %}
+{% extends 'base.html' %}
 
 {% block content %}
-  <h1>Management</h1>
-  {% for team, players in teams.items %}
-    <h2>{{ team }}</h2>
-    <ul>
-      {% for player in players %}
-        <li>{{ player.name }}</li>
-      {% endfor %}
-    </ul>
+  <h1>Team List</h1>
+  <a href="{% url 'add_team' %}">Create Team</a>
+  <ul>
+  {% for team in teams %}
+    <li>
+      <strong>Team:</strong> {{ team.name }}<br>
+      <strong>Coach:</strong> {{ team.coach }}<br>
+      <strong>Players:</strong> {{ team.players.all|join:", " }}<br>
+      {% if user.is_authenticated %}
+      <div class="card-footer text-muted">
+        <a href="{% url 'delete_team' team.name %}" class="btn btn-outline-danger btn-sm">Delete Team</a>            
+        <a href="{% url 'update_team' team.name %}" class="btn btn-outline-danger btn-sm">Edit Team</a> 
+      </div>
+  {% endif %}
+    </li>
   {% endfor %}
-  <a href="{% url 'add_team' %}" class="btn btn-primary">Add Team</a>
 
+  </ul>
 {% endblock %}

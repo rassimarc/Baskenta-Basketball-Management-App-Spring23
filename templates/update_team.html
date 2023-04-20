@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Update {{ team.name }} Team</h1>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <h3>Current Players:</h3>
+    {% for player in team.players.all %}
+      <p>{{ player }} </p>
+    {% endfor %}
+    <br>
+    <h3>Current Coach:</h3>
+    <p>{{ team.coach }}</p>
+    <br>
+    <button type="submit">Update Team</button>
+  </form>
+{% endblock %}

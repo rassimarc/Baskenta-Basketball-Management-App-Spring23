@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Team List</h1>
+  <ul>
+  {% for team in teams %}
+    {% if team.coach.user.username == user.username %}
+      <li>
+        <strong>Team:</strong> {{ team.name }}<br>
+        <strong>Coach:</strong> {{ team.coach }}<br>
+        <strong>Players:</strong> {{ team.players.all|join:", " }}<br>
+      </li>
+    {% endif %}
+  {% endfor %}
+  </ul>
+{% endblock %}

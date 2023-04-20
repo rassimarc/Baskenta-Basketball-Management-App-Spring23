@@ -5,7 +5,16 @@
   <title>{% block title %}Login{% endblock %}</title>
 </head>
 <body>
+  {% if user.profile.usertype == "Player"%}
+  <h1>Basketball Management | Player</h1>
+  {% elif user.profile.usertype == "Manager"%}
+  <h1>Basketball Management | Manager</h1>
+  {% elif user.profile.usertype == "Coach"%}
+  <h1>Basketball Management | Coach</h1>
+  {% else%}
   <h1>Basketball Management</h1>
+  {% endif%}
+
   <a href="{% url 'home' %}">Home</a>
   <a href="{% url 'aboutus' %}">About Us</a>
   <a href="{% url 'schedule' %}">Schedule</a>
