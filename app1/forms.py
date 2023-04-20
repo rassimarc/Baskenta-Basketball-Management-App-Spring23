@@ -37,7 +37,7 @@ class TeamFormAdmin(ModelForm):
 			'players': 'Players',
 		}
 		widgets = {
-			'name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Event Name'}),
+			'name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Team Name'}),
 			'coach': forms.Select(attrs={'class':'form-select', 'placeholder':'Coach'}),
 			'players': forms.SelectMultiple(attrs={'class':'form-control', 'placeholder':'Players'}),
 		}
