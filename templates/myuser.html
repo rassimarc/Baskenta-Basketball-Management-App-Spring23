@@ -1,4 +1,4 @@
-{% extends 'base_manager.html' %}
+{% extends 'base.html' %}
 
 {% block title %}
   My user
@@ -6,7 +6,7 @@
 
 {% block content %}
   <h1>{{user.username}}</h1>
-  <h1>Manager</h1>
+  <h1>Coach</h1>
   <h2>{{user.get_full_name}}</h2>
   <h3>Email: {{user.email}}</h3> 
   <p>Session started at {{user.last_login}}</p>

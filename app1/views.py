@@ -5,42 +5,28 @@ from app1.models import *
 from .forms import *
 from django.contrib import messages
 
+
+
 def home(request):
     if not request.user.is_authenticated:
         return redirect("login")
-    if request.user.profile.usertype == "Player":
-       return render(request, 'home_player.html')
-    if request.user.profile.usertype == "Coach":
-       return render(request, 'home_coach.html')
-    if request.user.profile.usertype == "Manager":
-       return render(request, 'home_manager.html')
+    return render(request, 'home.html')
+
 def aboutus(request):
     if not request.user.is_authenticated:
         return redirect("login")
-    if request.user.profile.usertype == "Player":
-        return render(request, 'aboutus_player.html')
-    elif request.user.profile.usertype == "Coach":
-        return render(request, 'aboutus_coach.html')
-    elif request.user.profile.usertype == "Manager":
-        return render(request, 'aboutus_manager.html')
+    return render(request, 'aboutus.html')
+        
 def schedule(request):
     if not request.user.is_authenticated:
         return redirect("login")
-    if request.user.profile.usertype == "Player":
-        return render(request, 'schedule_player.html')
-    elif request.user.profile.usertype == "Coach":
-        return render(request, 'schedule_coach.html')
-    elif request.user.profile.usertype == "Manager":
-        return render(request, 'schedule_manager.html')
+    return render(request, 'schedule.html')
+
 def communication(request):
     if not request.user.is_authenticated:
         return redirect("login")
-    if request.user.profile.usertype == "Player":
-        return render(request, 'communication_player.html')
-    elif request.user.profile.usertype == "Coach":
-        return render(request, 'communication_coach.html')
-    elif request.user.profile.usertype == "Manager":
-        return render(request, 'communication_manager.html')
+    return render(request, 'communication.html')
+
 def management(request):
     teams=Team.objects.all()	
     if not request.user.is_authenticated:
@@ -51,6 +37,8 @@ def management(request):
         return render(request, 'management_coach.html', {'teams':teams})
     if request.user.profile.usertype == "Manager":
         return render(request, 'management_manager.html', {'teams':teams})
+
+        
 
 def logout_view(request):
     logout(request)
@@ -67,21 +55,13 @@ def change_password(request):
             update_session_auth_hash(request, request.user)
             return redirect("myuser")
     form = PasswordChangeForm(request.user)
-    if request.user.profile.usertype == "Player":
-        return render(request, 'changepassword_player.html', {'form': form})
-    elif request.user.profile.usertype == "Coach":
-        return render(request, 'changepassword_coach.html', {'form': form})
-    elif request.user.profile.usertype == "Manager":
-        return render(request, 'changepassword_manager.html', {'form': form})
+    return render(request, 'changePassword.html')
+
 def myuser(request):
     if not request.user.is_authenticated:
         return redirect("login")
-    if request.user.profile.usertype == "Player":
-        return render(request, 'myuser_player.html')
-    elif request.user.profile.usertype == "Coach":
-        return render(request, 'myuser_coach.html')
-    elif request.user.profile.usertype == "Manager":
-        return render(request, 'myuser_manager.html')
+    return render(request, 'myuser.html')
+
 def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
@@ -96,18 +76,11 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
-
 def performance(request):
     if not request.user.is_authenticated:
         return redirect("login")
-    if request.user.profile.usertype == "Player":
-        return render(request, 'performance_player.html')
-    elif request.user.profile.usertype == "Coach":
-        return render(request, 'performance_coach.html')
-    elif request.user.profile.usertype == "Manager":
-        return render(request, 'performance_manager.html')
-from .forms import SignupForm, ResetPasswordForm
-
+    return render(request, 'performance.html')
+        
 def signup_player(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
@@ -121,6 +94,8 @@ def signup_player(request):
     else:
         form = SignupForm()
     return render(request, 'signup_player.html', {'form': form})
+
+
 def signup_coach(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
@@ -162,14 +137,9 @@ def delete_account(request):
             messages.success(request, "Your account has been deleted successfully.")
             return redirect("login")
         else:
-            return redirect("myuser")    
-     
-    if request.user.profile.usertype == "Player":
-        return render(request, 'confirm_delete_player.html')
-    elif request.user.profile.usertype == "Coach":
-        return render(request, 'confirm_delete_coach.html')
-    elif request.user.profile.usertype == "Manager":
-        return render(request, 'confirm_delete_manager.html') 
+            return redirect("myuser") 
+
+    return render(request, 'confirm_delete_account.html')
 
 def forgot_password(request):
     if request.method == 'POST':
@@ -226,13 +196,9 @@ def delete_team(request,team_name):
             return redirect('management')
         else:
             return redirect("management")    
-     
-    if request.user.profile.usertype == "Player":
-        return render(request, 'confirm_delete_team_player.html')
-    elif request.user.profile.usertype == "Coach":
-        return render(request, 'confirm_delete_team_coach.html')
-    elif request.user.profile.usertype == "Manager":
-        return render(request, 'confirm_delete_team_manager.html')	
+
+    return render(request, 'confirm_delete_team.html')	
+        
 
 def Edit_Personal_Info(request):
     if request.method == 'POST':
@@ -242,9 +208,6 @@ def Edit_Personal_Info(request):
             return redirect('myuser')
     else:
         form = UserUpdateForm(instance=request.user)
-    if request.user.profile.usertype == "Player":
-        return render(request, 'Edit_Personal_Info_player.html', {'form': form})
-    elif request.user.profile.usertype == "Coach":
-        return render(request, 'Edit_Personal_Info_coach.html', {'form': form})
-    elif request.user.profile.usertype == "Manager":
-        return render(request, 'Edit_Personal_Info_manager.html', {'form': form})	
+    
+    return render(request, 'Edit_Personal_Info.html', {'form': form})
+        	

@@ -1,7 +1,7 @@
-{% extends 'base_player.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
-
+<h1>Confirm Account Deletion</h1>
   <h2>Are you sure you want to delete your account?</h2>
   <form method="POST">
     {% csrf_token %}
