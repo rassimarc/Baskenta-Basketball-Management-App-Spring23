@@ -55,7 +55,7 @@ def change_password(request):
             update_session_auth_hash(request, request.user)
             return redirect("myuser")
     form = PasswordChangeForm(request.user)
-    return render(request, 'changePassword.html')
+    return render(request, 'changePassword.html', {'form': form})
 
 def myuser(request):
     if not request.user.is_authenticated:
