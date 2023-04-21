@@ -6,7 +6,6 @@ class Profile(models.Model):
     favorite_book = models.CharField(max_length=30)
     favorite_food = models.CharField(max_length=30)
     favorite_holiday = models.CharField(max_length=30)
-    favorite_fictional_character = models.CharField(max_length=30)
     def __str__(self):
         return self.user.username
 
@@ -17,3 +16,5 @@ class Team(models.Model):
 	
     def __str__(self):
         return self.name
+
+

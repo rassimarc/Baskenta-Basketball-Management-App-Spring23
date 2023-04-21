@@ -13,10 +13,9 @@ class SignupForm(UserCreationForm):
     favorite_book = forms.CharField(max_length=30, required=True, help_text='Required')
     favorite_food = forms.CharField(max_length=30, required=True, help_text='Required')
     favorite_holiday = forms.CharField(max_length=30, required=True, help_text='Required')
-    favorite_fictional_character = forms.CharField(max_length=30, required=True, help_text='Required')
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'favorite_book', 'favorite_food', 'favorite_holiday', 'favorite_fictional_character')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'favorite_book', 'favorite_food')
 
 class ResetPasswordForm(forms.Form):
     username = forms.CharField(max_length=30, required=True, help_text="Required")
@@ -24,7 +23,6 @@ class ResetPasswordForm(forms.Form):
     favorite_book = forms.CharField(max_length=30, required=True, help_text='Required')
     favorite_food = forms.CharField(max_length=30, required=True, help_text='Required')
     favorite_holiday = forms.CharField(max_length=30, required=True, help_text='Required')
-    favorite_fictional_character = forms.CharField(max_length=30, required=True, help_text='Required')
 
 # Admin SuperUser Event Form
 class TeamFormAdmin(ModelForm):

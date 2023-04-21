@@ -8,13 +8,9 @@ from django.contrib import messages
 
 
 def home(request):
-    if not request.user.is_authenticated:
-        return redirect("login")
     return render(request, 'home.html')
 
 def aboutus(request):
-    if not request.user.is_authenticated:
-        return redirect("login")
     return render(request, 'aboutus.html')
         
 def schedule(request):
@@ -87,7 +83,7 @@ def signup_player(request):
         if form.is_valid():
             # Save the user's information to the database
             user = form.save()
-            profile = Profile.objects.create(usertype="Player",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),favorite_fictional_character=form.cleaned_data.get('favorite_fictional_character'))
+            profile = Profile.objects.create(usertype="Player",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'))
             user.profile.save()
             # Redirect the user to the login page
             return redirect('login')
@@ -102,7 +98,7 @@ def signup_coach(request):
         if form.is_valid():
             # Save the user's information to the database
             user = form.save()
-            Profile.objects.create(usertype="Coach",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),favorite_fictional_character=form.cleaned_data.get('favorite_fictional_character'))
+            Profile.objects.create(usertype="Coach",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'))
             user.profile.save()
 
             # Redirect the user to the login page
@@ -117,7 +113,7 @@ def signup_manager(request):
         if form.is_valid():
             # Save the user's information to the database
             user = form.save()
-            Profile.objects.create(usertype="Manager",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),favorite_fictional_character=form.cleaned_data.get('favorite_fictional_character'))
+            Profile.objects.create(usertype="Manager",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'))
             user.profile.save()
 
             # Redirect the user to the login page
