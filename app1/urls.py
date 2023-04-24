@@ -24,5 +24,9 @@ urlpatterns = [
     path('delete_team/<str:team_name>/', views.delete_team, name='delete_team'),
     path('update_team/<str:team_name>/', views.update_team, name='update_team'),
     path('EditPersonalInfo/', views.Edit_Personal_Info, name = 'Edit_Personal_Info'),
+    path('all_events/', views.all_events, name='all_events'), 
+    path('add_event/', views.add_event, name='add_event'), 
+    path('update/', views.update, name='update'),
+    path('remove/', views.remove, name='remove'),
   
 ]

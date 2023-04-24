@@ -13,10 +13,7 @@ def home(request):
 def aboutus(request):
     return render(request, 'aboutus.html')
         
-def schedule(request):
-    if not request.user.is_authenticated:
-        return redirect("login")
-    return render(request, 'schedule.html')
+
 
 def communication(request):
     if not request.user.is_authenticated:
@@ -207,3 +204,63 @@ def Edit_Personal_Info(request):
     
     return render(request, 'Edit_Personal_Info.html', {'form': form})
         	
+
+
+
+from django.http import JsonResponse 
+  
+
+def schedule(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    all_events = Events.objects.all()
+    context = {
+        "events":all_events,
+    }
+    return render(request,'schedule.html',context)
+ 
+def all_events(request):                                                                                               
+    all_events = Events.objects.all()                                                                                    
+    out = []                                                                                                             
+    for event in all_events:                                                                                             
+        out.append({                                                                                                     
+            'title': event.name,                                                                                         
+            'id': event.id,                                                                                              
+            'start': event.start.strftime("%m/%d/%Y, %H:%M:%S"),                                                         
+            'end': event.end.strftime("%m/%d/%Y, %H:%M:%S"),
+            'description': event.description,                                                           
+        })                                                                                                               
+                                                                                                                      
+    return JsonResponse(out, safe=False) 
+         
+def add_event(request):
+    start = request.GET.get("start", None)
+    end = request.GET.get("end", None)
+    title = request.GET.get("title", None)
+    description = request.GET.get("description", None)
+    event = Events(name=str(title), start=start, end=end, description=description)
+    event.save()
+    data = {}
+    return JsonResponse(data)
+ 
+def update(request):
+    start = request.GET.get("start", None)
+    end = request.GET.get("end", None)
+    title = request.GET.get("title", None)
+    description = request.GET.get("description", None) # Get the description field value
+    id = request.GET.get("id", None)
+    event = Events.objects.get(id=id)
+    event.start = start
+    event.end = end
+    event.name = title
+    event.description = description # Update the description field
+    event.save()
+    data = {}
+    return JsonResponse(data)
+ 
+def remove(request):
+    id = request.GET.get("id", None)
+    event = Events.objects.get(id=id)
+    event.delete()
+    data = {}
+    return JsonResponse(data)
