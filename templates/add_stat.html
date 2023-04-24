@@ -1,13 +1,13 @@
-{% extends 'management_manager.html' %}
+{% extends 'performance.html' %}
 
 {% block content %}
 
 {% if user.is_authenticated %}
-	<h1>Add Team</h1>
+	<h1>Add Stat</h1>
 <br/><br/>
 
 {% if submitted %}
-		Your Team Was Submitted Succefully
+		Your stats Was Submitted Succefully
 
 	{% else %}
 
@@ -17,7 +17,7 @@
 			{{ form.as_p }}
 
 			<input type="submit" value="Submit" class="btn btn-secondary">
-			<button type="button" onclick="window.location.href='{% url 'management' %}'">Cancel</button>
+			<button type="button" onclick="window.location.href='{% url 'performance' %}'">Cancel</button>
 
 
 		</form>

@@ -1,42 +1,39 @@
 {% extends 'base.html' %}
 
-{% block title %}My Basketball Management App{% endblock %}
+{% block title %}Basketball Management Club{% endblock %}
 
 {% block content %}
-  <header>
-    <h1>Welcome to My Basketball Management App</h1>
-    <nav>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="{% url 'aboutus' %}">About Us</a></li>
-        <li><a href="{% url 'communication' %}">Contact Us</a></li>
-        <li><a href="{% url 'logout' %}">Log Out</a></li>
-      </ul>
-    </nav>
-  </header>
+
   <main>
     <section class="hero">
-      <h2>Manage Your Basketball Team with Ease</h2>
-      <p>Our app provides everything you need to manage your basketball team, from scheduling games to tracking stats and more.</p>
+      <h2>Join Our Basketball Management Club Today</h2>
+      <p>Our club offers a variety of services to help you manage your basketball team, from organizing games and tournaments to tracking stats and more.</p>
       <a href="{% url 'aboutus' %}" class="cta">Learn More</a>
     </section>
     <section class="features">
-      <h3>Features</h3>
+      <h3>Our Services</h3>
       <ul>
-        <li>Game Scheduling</li>
-        <li>Player Management</li>
-        <li>Stat Tracking</li>
-        <li>Team Communication</li>
+        <li>Game and Tournament Organization</li>
+        <li>Player Management and Development</li>
+        <li>Stat Tracking and Analysis</li>
+        <li>Team Communication and Collaboration</li>
+        <li>Training and Coaching Programs</li>
+        <li>Community and Networking Opportunities</li>
       </ul>
     </section>
     <section class="testimonials">
-      <h3>What Our Users Say</h3>
+      <h3>What Our Members Say</h3>
       <blockquote>
-        "This app has been a game-changer for our team. It's easy to use and has everything we need to stay organized and competitive." - John, Coach
+        "I've been a member of this club for a year now, and it has truly transformed the way I manage my basketball team. The services and resources provided are top-notch, and the community is supportive and inspiring." - Mark, Coach
       </blockquote>
       <blockquote>
-        "I love using this app to keep track of my stats and see how I'm improving over time." - Sarah, Player
+        "As a player, I've learned so much from this club, from improving my skills and performance to building my confidence and network. I highly recommend it to anyone who's serious about basketball." - Julia, Player
       </blockquote>
+    </section>
+    <section class="join">
+      <h3>Join Our Club Today</h3>
+      <p>Don't miss out on the benefits of being a member of our basketball management club. Sign up now and start managing your team like a pro.</p>
+      <a href="{% url 'login' %}" class="cta">Join Now</a>
     </section>
     <section class="social">
       <h3>Follow Us on Social Media</h3>
@@ -48,6 +45,6 @@
     </section>
   </main>
   <footer>
-    <p>&copy; 2023 My Basketball Management App</p>
+    <p>&copy; 2023 Basketball Management Club</p>
   </footer>
 {% endblock %}

@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 
 from django.forms import ModelForm
-from .models import Team
+from .models import Team, Stats
 
 
 class SignupForm(UserCreationForm):
@@ -13,10 +13,9 @@ class SignupForm(UserCreationForm):
     favorite_book = forms.CharField(max_length=30, required=True, help_text='Required')
     favorite_food = forms.CharField(max_length=30, required=True, help_text='Required')
     favorite_holiday = forms.CharField(max_length=30, required=True, help_text='Required')
-    favorite_fictional_character = forms.CharField(max_length=30, required=True, help_text='Required')
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'favorite_book', 'favorite_food', 'favorite_holiday', 'favorite_fictional_character')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'favorite_book', 'favorite_food')
 
 class ResetPasswordForm(forms.Form):
     username = forms.CharField(max_length=30, required=True, help_text="Required")
@@ -24,7 +23,6 @@ class ResetPasswordForm(forms.Form):
     favorite_book = forms.CharField(max_length=30, required=True, help_text='Required')
     favorite_food = forms.CharField(max_length=30, required=True, help_text='Required')
     favorite_holiday = forms.CharField(max_length=30, required=True, help_text='Required')
-    favorite_fictional_character = forms.CharField(max_length=30, required=True, help_text='Required')
 
 # Admin SuperUser Event Form
 class TeamFormAdmin(ModelForm):
@@ -37,7 +35,7 @@ class TeamFormAdmin(ModelForm):
 			'players': 'Players',
 		}
 		widgets = {
-			'name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Event Name'}),
+			'name': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Team Name'}),
 			'coach': forms.Select(attrs={'class':'form-select', 'placeholder':'Coach'}),
 			'players': forms.SelectMultiple(attrs={'class':'form-control', 'placeholder':'Players'}),
 		}
@@ -49,3 +47,20 @@ class UserUpdateForm(UserChangeForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name', 'last_name')
+
+        
+
+class PlayerStat(ModelForm):
+	class Meta:
+		model = Stats
+		fields = ('name', 'position', 'stat1')
+		labels = {
+			'name': 'name',
+			'position': ' ',
+			'stat1': ' ',
+		}
+		widgets = {
+			'name': forms.Select(attrs={'class':'form-select', 'placeholder':'name'}),
+            'position': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Position'}),
+			'stat1': forms.TextInput(attrs={'class':'form-control', 'placeholder':'stat1'}),
+		}

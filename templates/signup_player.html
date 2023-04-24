@@ -8,5 +8,7 @@
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Signup</button>
+    <button type="button" onclick="window.location.href='{% url 'login' %}'">Cancel</button>
   </form>
 {% endblock %}
+

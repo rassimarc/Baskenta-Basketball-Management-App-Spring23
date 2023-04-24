@@ -8,19 +8,12 @@ from django.contrib import messages
 
 
 def home(request):
-    if not request.user.is_authenticated:
-        return redirect("login")
     return render(request, 'home.html')
 
 def aboutus(request):
-    if not request.user.is_authenticated:
-        return redirect("login")
     return render(request, 'aboutus.html')
         
-def schedule(request):
-    if not request.user.is_authenticated:
-        return redirect("login")
-    return render(request, 'schedule.html')
+
 
 def communication(request):
     if not request.user.is_authenticated:
@@ -76,10 +69,12 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
+
 def performance(request):
+    stats=Stats.objects.all()
     if not request.user.is_authenticated:
         return redirect("login")
-    return render(request, 'performance.html')
+    return render(request, 'performance.html',{'stats':stats})
         
 def signup_player(request):
     if request.method == 'POST':
@@ -87,7 +82,7 @@ def signup_player(request):
         if form.is_valid():
             # Save the user's information to the database
             user = form.save()
-            profile = Profile.objects.create(usertype="Player",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),favorite_fictional_character=form.cleaned_data.get('favorite_fictional_character'))
+            profile = Profile.objects.create(usertype="Player",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'))
             user.profile.save()
             # Redirect the user to the login page
             return redirect('login')
@@ -102,7 +97,7 @@ def signup_coach(request):
         if form.is_valid():
             # Save the user's information to the database
             user = form.save()
-            Profile.objects.create(usertype="Coach",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),favorite_fictional_character=form.cleaned_data.get('favorite_fictional_character'))
+            Profile.objects.create(usertype="Coach",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'))
             user.profile.save()
 
             # Redirect the user to the login page
@@ -117,7 +112,7 @@ def signup_manager(request):
         if form.is_valid():
             # Save the user's information to the database
             user = form.save()
-            Profile.objects.create(usertype="Manager",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),favorite_fictional_character=form.cleaned_data.get('favorite_fictional_character'))
+            Profile.objects.create(usertype="Manager",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'))
             user.profile.save()
 
             # Redirect the user to the login page
@@ -211,3 +206,99 @@ def Edit_Personal_Info(request):
     
     return render(request, 'Edit_Personal_Info.html', {'form': form})
         	
+
+
+
+from django.http import JsonResponse 
+  
+
+def schedule(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    all_events = Events.objects.all()
+    context = {
+        "events":all_events,
+    }
+    return render(request,'schedule.html',context)
+ 
+def all_events(request):                                                                                               
+    all_events = Events.objects.all()                                                                                    
+    out = []                                                                                                             
+    for event in all_events:                                                                                             
+        out.append({                                                                                                     
+            'title': event.name,                                                                                         
+            'id': event.id,                                                                                              
+            'start': event.start.strftime("%m/%d/%Y, %H:%M:%S"),                                                         
+            'end': event.end.strftime("%m/%d/%Y, %H:%M:%S"),
+            'description': event.description,                                                           
+        })                                                                                                               
+                                                                                                                      
+    return JsonResponse(out, safe=False) 
+         
+def add_event(request):
+    start = request.GET.get("start", None)
+    end = request.GET.get("end", None)
+    title = request.GET.get("title", None)
+    description = request.GET.get("description", None)
+    event = Events(name=str(title), start=start, end=end, description=description)
+    event.save()
+    data = {}
+    return JsonResponse(data)
+ 
+def update(request):
+    start = request.GET.get("start", None)
+    end = request.GET.get("end", None)
+    title = request.GET.get("title", None)
+    description = request.GET.get("description", None) # Get the description field value
+    id = request.GET.get("id", None)
+    event = Events.objects.get(id=id)
+    event.start = start
+    event.end = end
+    event.name = title
+    event.description = description # Update the description field
+    event.save()
+    data = {}
+    return JsonResponse(data)
+ 
+def remove(request):
+    id = request.GET.get("id", None)
+    event = Events.objects.get(id=id)
+    event.delete()
+    data = {}
+    return JsonResponse(data)
+def add_stat(request):
+    submitted = False
+    if request.method == "POST":
+        form = PlayerStat(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            if Stats.objects.filter(name=name).exists():
+                form.add_error('name', 'Statistics for this player have already been recorded')
+            else:
+                form.save()
+                return redirect('performance')    
+    else:
+        form = PlayerStat()
+        if 'submitted' in request.GET:
+            submitted = True
+
+    return render(request, 'add_stat.html', {'form': form, 'submitted': submitted})
+
+def update_stat(request, stats_id):
+    stats = Stats.objects.get(id=stats_id)
+    form = PlayerStat(request.POST or None, request.FILES or None, instance=stats)
+    if form.is_valid():
+        form.save()
+        return redirect('performance')
+    return render(request, 'update_stat.html', {'stats': stats, 'form': form})
+
+def delete_stat(request, stats_id):
+    if request.method == "POST":
+        if request.POST.get("confirm") == "yes":
+            stats = Stats.objects.get(id=stats_id)
+            stats.delete()
+            return redirect('performance')
+        else:
+            return redirect("performance")    
+
+    return render(request, 'confirm_delete_stat.html')	
