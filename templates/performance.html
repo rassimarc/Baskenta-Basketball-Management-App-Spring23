@@ -11,7 +11,8 @@
       <strong>stat1:</strong> {{ stat.stat1 }}<br>
       {% if user.is_authenticated %}
       <div class="card-footer text-muted">          
-        <a href="{% url 'update_stat' stat.name %}" class="btn btn-outline-danger btn-sm">Edit Team</a> 
+        <a href="{% url 'update_stat' stat.id %}" class="btn btn-outline-danger btn-sm">Edit Statistics</a> 
+        <a href="{% url 'delete_stat' stat.id %}" class="btn btn-outline-danger btn-sm">Delete Statistics</a>
       </div>
   {% endif %}
     </li>

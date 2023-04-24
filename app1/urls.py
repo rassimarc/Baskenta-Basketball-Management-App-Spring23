@@ -25,6 +25,7 @@ urlpatterns = [
     path('update_team/<str:team_name>/', views.update_team, name='update_team'),
     path('EditPersonalInfo/', views.Edit_Personal_Info, name = 'Edit_Personal_Info'),
     path('add_stat/', views.add_stat, name='add_stat'),
-    path('update_stat/<str:stats_name>/', views.update_stat, name='update_stat'),
+    path('update_stat/<int:stats_id>/', views.update_stat, name='update_stat'),
+    path('delete_stat/<int:stats_id>/', views.delete_stat, name='delete_stat'),
   
 ]

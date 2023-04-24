@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Update {{ stats.name }} stats</h1>
+  <h1>Update {{stats.name}} stats</h1>
   <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
 
-    <button type="submit">Update Team</button>
+    <button type="submit">Update Statistics</button>
     <button type="button" onclick="window.location.href='{% url 'performance' %}'">Cancel</button>
 
   </form>

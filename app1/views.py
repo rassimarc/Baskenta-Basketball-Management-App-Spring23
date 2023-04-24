@@ -227,10 +227,21 @@ def add_stat(request):
 
     return render(request, 'add_stat.html', {'form': form, 'submitted': submitted})
 
-def update_stat(request, stats_name):
-    stats = Stats.objects.get(name=stats_name)
+def update_stat(request, stats_id):
+    stats = Stats.objects.get(id=stats_id)
     form = PlayerStat(request.POST or None, request.FILES or None, instance=stats)
     if form.is_valid():
         form.save()
         return redirect('performance')
     return render(request, 'update_stat.html', {'stats': stats, 'form': form})
+
+def delete_stat(request, stats_id):
+    if request.method == "POST":
+        if request.POST.get("confirm") == "yes":
+            stats = Stats.objects.get(id=stats_id)
+            stats.delete()
+            return redirect('performance')
+        else:
+            return redirect("performance")    
+
+    return render(request, 'confirm_delete_stat.html')	
