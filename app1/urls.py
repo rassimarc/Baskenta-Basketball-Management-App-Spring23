@@ -28,5 +28,7 @@ urlpatterns = [
     path('add_event/', views.add_event, name='add_event'), 
     path('update/', views.update, name='update'),
     path('remove/', views.remove, name='remove'),
+    path('add_stat/', views.add_stat, name='add_stat'),
+    path('update_stat/<str:stats_name>/', views.update_stat, name='update_stat'),
   
 ]

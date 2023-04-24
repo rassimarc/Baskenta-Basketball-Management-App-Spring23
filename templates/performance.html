@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Performance</h1>
-  <table>
-    <tr>
-      <th>Player Name</th>
-      <th>Performance Metric 1</th>
-      <th>Performance Metric 2</th>
-      <th>Performance Metric 3</th>
-    </tr>
-    {% for player in players %}
-      <tr>
-        <td>{{ player.name }}</td>
-        <td contenteditable>{{ player.metric1 }}</td>
-        <td contenteditable>{{ player.metric2 }}</td>
-        <td contenteditable>{{ player.metric3 }}</td>
-      </tr>
-    {% endfor %}
-  </table>
+  <h1>Statistics List</h1>
+  <a href="{% url 'add_stat' %}">Create stat</a>
+  <ul>
+  {% for stat in stats %}
+    <li>
+      <strong>Name:</strong> {{ stat.name }}<br>
+      <strong>Position:</strong> {{ stat.position }}<br>
+      <strong>stat1:</strong> {{ stat.stat1 }}<br>
+      {% if user.is_authenticated %}
+      <div class="card-footer text-muted">          
+        <a href="{% url 'update_stat' stat.name %}" class="btn btn-outline-danger btn-sm">Edit Team</a> 
+      </div>
+  {% endif %}
+    </li>
+  {% endfor %}
+
+  </ul>
 {% endblock %}

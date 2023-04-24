@@ -69,10 +69,12 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
+
 def performance(request):
+    stats=Stats.objects.all()
     if not request.user.is_authenticated:
         return redirect("login")
-    return render(request, 'performance.html')
+    return render(request, 'performance.html',{'stats':stats})
         
 def signup_player(request):
     if request.method == 'POST':
@@ -264,3 +266,28 @@ def remove(request):
     event.delete()
     data = {}
     return JsonResponse(data)
+def add_stat(request):
+    submitted = False
+    if request.method == "POST":
+        form = PlayerStat(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            if Stats.objects.filter(name=name).exists():
+                form.add_error('name', 'Statistics for this player have already been recorded')
+            else:
+                form.save()
+                return redirect('performance')    
+    else:
+        form = PlayerStat()
+        if 'submitted' in request.GET:
+            submitted = True
+
+    return render(request, 'add_stat.html', {'form': form, 'submitted': submitted})
+
+def update_stat(request, stats_name):
+    stats = Stats.objects.get(name=stats_name)
+    form = PlayerStat(request.POST or None, request.FILES or None, instance=stats)
+    if form.is_valid():
+        form.save()
+        return redirect('performance')
+    return render(request, 'update_stat.html', {'stats': stats, 'form': form})

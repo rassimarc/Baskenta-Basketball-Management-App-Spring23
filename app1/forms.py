@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 
 from django.forms import ModelForm
-from .models import Team
+from .models import Team, Stats
 
 
 class SignupForm(UserCreationForm):
@@ -48,3 +48,19 @@ class UserUpdateForm(UserChangeForm):
         model = User
         fields = ('username', 'email', 'first_name', 'last_name')
 
+        
+
+class PlayerStat(ModelForm):
+	class Meta:
+		model = Stats
+		fields = ('name', 'position', 'stat1')
+		labels = {
+			'name': 'name',
+			'position': ' ',
+			'stat1': ' ',
+		}
+		widgets = {
+			'name': forms.Select(attrs={'class':'form-select', 'placeholder':'name'}),
+            'position': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Position'}),
+			'stat1': forms.TextInput(attrs={'class':'form-control', 'placeholder':'stat1'}),
+		}
