@@ -18,3 +18,11 @@ class Team(models.Model):
         return self.name
 
 
+
+class Stats(models.Model):
+    name = models.ForeignKey(Profile, related_name='players', limit_choices_to={'usertype': 'Player'}, blank=True, null=True, on_delete=models.SET_NULL)
+    position = models.CharField('Position', max_length=120)
+    stat1 = models.CharField('stat1', max_length=120)
+
+    def __str__(self):
+        return self.name
