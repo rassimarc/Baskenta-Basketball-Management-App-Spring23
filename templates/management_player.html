@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
+  <div class="d-flex justify-content-end mb-3">
+    <a href="{% url 'payment' %}" class="btn btn-primary">Make Payment</a>
+  </div>
   <h1>Team List</h1>
   <ul>
   {% for team in teams %}
