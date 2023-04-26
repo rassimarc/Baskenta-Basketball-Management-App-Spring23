@@ -1,0 +1,109 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: darkred;
+    color: #fff;
+    padding: 30px;
+    font-size: 24px;
+  }
+  .event-info {
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: white;
+}
+
+.event-description {
+  margin-top: 5px;
+}
+
+.event-time {
+  margin-top: 5px;
+  font-weight: bold;
+}
+
+  .flogo{
+
+
+    width: 30px;
+    height: 30px;
+  }
+  .ilogo{
+
+width: 30px;
+height: 30px;
+}
+
+.tlogo{
+
+
+width: 30px;
+height: 30px;
+}
+
+.ylogo{
+
+
+width: 30px;
+height: 30px;
+}
+  
+  header a {
+    color: #fff;
+    text-decoration: none;
+    margin-right: 20px;
+  }
+  
+  header a:hover {
+    text-decoration: underline;
+  }
+  
+  header button {
+    background-color: #fff;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  header button:hover {
+    background-color: #ddd;
+  }
+  
+  /* Styling for the logo */
+  #logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-right: 20px;
+  }
+  
+  #logo img {
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+  }
+  
+  /* Styling for the footer */
+  footer {
+    background-color: darkred;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    font-size: 18px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  footer p {
+    margin: 0;
+  }
