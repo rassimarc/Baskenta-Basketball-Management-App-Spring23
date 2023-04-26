@@ -24,7 +24,14 @@ urlpatterns = [
     path('delete_team/<str:team_name>/', views.delete_team, name='delete_team'),
     path('update_team/<str:team_name>/', views.update_team, name='update_team'),
     path('EditPersonalInfo/', views.Edit_Personal_Info, name = 'Edit_Personal_Info'),
+    path('all_events/', views.all_events, name='all_events'), 
+    path('add_event/', views.add_event, name='add_event'), 
+    path('update/', views.update, name='update'),
+    path('remove/', views.remove, name='remove'),
     path('add_stat/', views.add_stat, name='add_stat'),
     path('update_stat/<str:stats_name>/', views.update_stat, name='update_stat'),
-  
+    path('payment/', views.payment, name='payment'),
+    path('not_accepted/', views.not_accepted, name="not_accepted"),
+    path('accept_request/<str:username>/', views.accept_request, name='accept_request'),
+    path('reject_request/<str:username>/', views.reject_request, name='reject_request'),
 ]

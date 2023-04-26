@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Not Accepted Yet!
+{% endblock %}
+
+{% block content %}
+    <h1>You haven't been accepted by a manager yet!</h1>
+    <a href="{% url 'login' %}">Try again</a>
+{% endblock %}
