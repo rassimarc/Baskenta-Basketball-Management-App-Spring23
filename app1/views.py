@@ -29,7 +29,7 @@ def management(request):
     if request.user.profile.usertype == "Coach":
         return render(request, 'management_coach.html', {'teams':teams})
     if request.user.profile.usertype == "Manager":
-        return render(request, 'management_manager.html', {'teams':teams})
+        return render(request, 'management_manager.html', {'teams':teams, 'signup_requests':Request.objects.all()})
 
         
 
@@ -63,6 +63,8 @@ def login_view(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
+                if not user.profile.accepted:
+                    return redirect("not_accepted")
                 login(request, user)
                 return redirect('myuser')
     else:
@@ -82,8 +84,10 @@ def signup_player(request):
         if form.is_valid():
             # Save the user's information to the database
             user = form.save()
-            profile = Profile.objects.create(usertype="Player",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'))
+            profile = Profile.objects.create(usertype="Player",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),due_payment=0,accepted=False)
             user.profile.save()
+            request = Request.objects.create(player=user)
+            request.save()
             # Redirect the user to the login page
             return redirect('login')
     else:
@@ -97,7 +101,7 @@ def signup_coach(request):
         if form.is_valid():
             # Save the user's information to the database
             user = form.save()
-            Profile.objects.create(usertype="Coach",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'))
+            Profile.objects.create(usertype="Coach",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),due_payment=0,accepted=True)
             user.profile.save()
 
             # Redirect the user to the login page
@@ -112,7 +116,7 @@ def signup_manager(request):
         if form.is_valid():
             # Save the user's information to the database
             user = form.save()
-            Profile.objects.create(usertype="Manager",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'))
+            Profile.objects.create(usertype="Manager",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),due_payment=0,accepted=True)
             user.profile.save()
 
             # Redirect the user to the login page
@@ -291,3 +295,38 @@ def update_stat(request, stats_name):
         form.save()
         return redirect('performance')
     return render(request, 'update_stat.html', {'stats': stats, 'form': form})
+
+def payment(request):
+    player_name = request.user.get_full_name() # Get the player's name
+    remaining_amount = request.user.profile.due_payment # Get the remaining amount
+    if request.method == 'POST':
+        # Handle form submission
+        amount_paid = int(request.POST.get('amount_paid'))
+        remaining_amount -= amount_paid
+        request.user.profile.due_payment=remaining_amount
+        request.user.profile.save()
+    else:
+        amount_paid = None
+    context = {
+        'player_name': player_name,
+        'remaining_amount': remaining_amount,
+        'amount_paid': amount_paid
+    }
+    return render(request, 'payment.html', context)
+
+
+def not_accepted(request):
+    return render(request, 'not_accepted.html')
+def reject_request(request, username):
+    user = User.objects.get(username=username)
+    request = Request.objects.get(player=user)
+    request.delete()
+    user.delete()
+    return redirect("management")
+def accept_request(request, username):
+    user = User.objects.get(username=username)
+    request = Request.objects.get(player=user)
+    request.delete()
+    user.profile.accepted = True
+    user.profile.save()
+    return redirect("management")
