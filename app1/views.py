@@ -323,10 +323,18 @@ def reject_request(request, username):
     request.delete()
     user.delete()
     return redirect("management")
+
 def accept_request(request, username):
     user = User.objects.get(username=username)
-    request = Request.objects.get(player=user)
-    request.delete()
+    signup_request = Request.objects.get(player=user)
+    due_amount = request.POST.get('due_amount')  # get the due_amount value from the POST request
+    signup_request.delete()
     user.profile.accepted = True
+    user.profile.due_payment = due_amount  # set the due_payment value to the due_amount value
     user.profile.save()
     return redirect("management")
+
+def player_profile(request, username):
+    user = User.objects.get(username=username)
+    profile = user.profile
+    return render(request, 'player_profile.html', {'user': user, 'profile': profile})

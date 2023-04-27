@@ -64,3 +64,12 @@ class PlayerStat(ModelForm):
             'position': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Position'}),
 			'stat1': forms.TextInput(attrs={'class':'form-control', 'placeholder':'stat1'}),
 		}
+
+# class AcceptRequestForm(forms.Form):
+#     due_amount = forms.IntegerField(min_value=1, required=True, help_text="Required")
+#     class Meta:
+#         model = User
+#         fields = ('due_amount')
+
+class SignupRequestForm(forms.Form):
+    due_amount = forms.IntegerField(label='Due amount')

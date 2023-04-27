@@ -1,0 +1,88 @@
+
+    /* Style for the entire page */
+    body {
+      background-color: #f5f5f5;
+      font-family: Arial, sans-serif;
+      color: #333;
+      margin: 0;
+    }
+    
+    /* Style for the header */
+    h2 {
+      font-size: 2em;
+      text-align: center;
+      margin-top: 50px;
+    }
+    
+    /* Style for the form */
+    form {
+      width: 400px;
+      margin: 0 auto;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      padding: 40px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Style for the form labels */
+    label {
+      display: block;
+      font-size: 0.9em;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    /* Style for the form input fields */
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      font-size: 1em;
+      margin-bottom: 10px;
+    }
+    
+    /* Style for the form submit button */
+    button[type="submit"], a.button {
+      display: block;
+      width: 100%;
+      background-color: darkred;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      padding: 10px 20px;
+      font-size: 1em;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    
+    button[type="submit"]:hover, a.button:hover {
+      background-color: darkred;
+    }
+    
+    /* Style for the links to sign up and reset password */
+    .signup-links {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    .signup-links a {
+      display: inline-block;
+      background-color: darkred;
+      border: 1px solid darkred;
+      color:white;
+      padding: 10px 20px;
+      border-radius: 3px;
+      font-weight: bold;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      text-decoration: none;
+      font-size: 1em;
+    }
+    
+    .signup-links a:hover {
+      background-color: darkred;
+      color: #fff;
+      text-decoration: none;
+    }
