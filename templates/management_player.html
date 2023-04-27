@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Payment</h1>
-<p> Due payment: {{ due_payment }} </p> 
+<p> Due payment: {{ user.profile.due_payment }} </p> 
 <a href="{% url 'payment' %}">Pay</a>
 <h1>Team List</h1>
   <ul>

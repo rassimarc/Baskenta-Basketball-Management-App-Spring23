@@ -25,7 +25,7 @@ def management(request):
     if not request.user.is_authenticated:
         return redirect("login")
     if request.user.profile.usertype == "Player":
-        return render(request, 'management_player.html', {'teams':teams, 'due_payment':request.user.profile.due_payment})
+        return render(request, 'management_player.html', {'teams':teams})
     if request.user.profile.usertype == "Coach":
         return render(request, 'management_coach.html', {'teams':teams})
     if request.user.profile.usertype == "Manager":
@@ -323,10 +323,18 @@ def reject_request(request, username):
     request.delete()
     user.delete()
     return redirect("management")
+
 def accept_request(request, username):
     user = User.objects.get(username=username)
-    request = Request.objects.get(player=user)
-    request.delete()
+    signup_request = Request.objects.get(player=user)
+    due_amount = request.POST.get('due_amount')  # get the due_amount value from the POST request
+    signup_request.delete()
     user.profile.accepted = True
+    user.profile.due_payment = due_amount  # set the due_payment value to the due_amount value
     user.profile.save()
     return redirect("management")
+
+def player_profile(request, username):
+    user = User.objects.get(username=username)
+    profile = user.profile
+    return render(request, 'player_profile.html', {'user': user, 'profile': profile})

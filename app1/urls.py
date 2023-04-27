@@ -34,4 +34,5 @@ urlpatterns = [
     path('not_accepted/', views.not_accepted, name="not_accepted"),
     path('accept_request/<str:username>/', views.accept_request, name='accept_request'),
     path('reject_request/<str:username>/', views.reject_request, name='reject_request'),
+    path('player_profile/<str:username>/', views.player_profile, name='player_profile'),
 ]
