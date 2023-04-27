@@ -338,3 +338,8 @@ def player_profile(request, username):
     user = User.objects.get(username=username)
     profile = user.profile
     return render(request, 'player_profile.html', {'user': user, 'profile': profile})
+
+def all_profiles(request):
+    profiles = Profile.objects.all()
+    return render(request, 'all_members.html', {'profiles': profiles})
+

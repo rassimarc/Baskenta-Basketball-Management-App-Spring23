@@ -8,7 +8,10 @@
       <li>
         <strong>Team:</strong> {{ team.name }}<br>
         <strong>Coach:</strong> {{ team.coach }}<br>
-        <strong>Players:</strong> {{ team.players.all|join:", " }}<br>
+        <strong>Players:</strong>  {% for player in team.players.all %}
+        <a href="{% url 'player_profile' username=player.user.username %}">{{ player.user.username }}</a>{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+       <br>
       </li>
     {% endif %}
   {% endfor %}

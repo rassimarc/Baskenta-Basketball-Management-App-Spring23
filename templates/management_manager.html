@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<button type="submit" class="btn btn-outline-danger btn-sm" onclick="window.location.href='{% url 'all_profiles' %}'">View All Members</button>
   <h1>Team List</h1>
   <a href="{% url 'add_team' %}">Create Team</a>
   <ul>
