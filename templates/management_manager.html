@@ -33,7 +33,7 @@
         <label for="due_amount">Enter due amount:</label>
         <input type="number" id="due_amount" name="due_amount" required min="0" max="1000000"><br><br>
         <button type="submit" class="btn btn-outline-danger btn-sm">Accept request</button>
-        <a href="{% url 'reject_request' username=signup_request.player.get_username %}" class="btn btn-outline-danger btn-sm">Reject request</a> 
+        <button type="submit" class="btn btn-outline-danger btn-sm" formaction="{% url 'reject_request' username=signup_request.player.get_username %}">Reject request</button>
       </form>
     </li>
   {% endfor %}
