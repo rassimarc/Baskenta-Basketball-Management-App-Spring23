@@ -4,7 +4,8 @@ from django.shortcuts import render, redirect
 from app1.models import *
 from .forms import *
 from django.contrib import messages
-
+from chat.models import *
+from django.http import HttpResponse, JsonResponse
 
 
 def home(request):
@@ -13,13 +14,6 @@ def home(request):
 def aboutus(request):
     return render(request, 'aboutus.html')
         
-
-
-def communication(request):
-    if not request.user.is_authenticated:
-        return redirect("login")
-    return render(request, 'communication.html')
-
 def management(request):
     teams=Team.objects.all()	
     if not request.user.is_authenticated:
@@ -148,7 +142,7 @@ def forgot_password(request):
             new_password = form.cleaned_data.get('new_password')
             user = User.objects.get(username=username)
             if user is not None:
-                if user.profile.favorite_book == form.cleaned_data.get('favorite_book') and user.profile.favorite_food == form.cleaned_data.get('favorite_food') and user.profile.favorite_holiday == form.cleaned_data.get('favorite_holiday') and user.profile.favorite_fictional_character == form.cleaned_data.get('favorite_fictional_character'):
+                if user.profile.favorite_book == form.cleaned_data.get('favorite_book') and user.profile.favorite_food == form.cleaned_data.get('favorite_food') and user.profile.favorite_holiday == form.cleaned_data.get('favorite_holiday'):
                     user.set_password(new_password)
                     user.save()
                     return redirect("login")
@@ -330,3 +324,45 @@ def accept_request(request, username):
     user.profile.accepted = True
     user.profile.save()
     return redirect("management")
+
+
+# Create your views here.
+def chat_home(request):
+    if not request.user.is_authenticated:
+        return redirect("login")
+    return render(request, 'chat_home.html')
+
+def room(request, room):
+    username = request.GET.get('username')
+    room_details = Room.objects.get(name=room)
+    return render(request, 'room.html', {
+        'username': username,
+        'room': room,
+        'room_details': room_details
+    })
+
+def checkview(request):
+    room = request.POST['room_name']
+    username = request.POST['username']
+
+    if Room.objects.filter(name=room).exists():
+        return redirect(room+'/?username='+username)
+    else:
+        new_room = Room.objects.create(name=room)
+        new_room.save()
+        return redirect(room+'/?username='+username)
+
+def send(request):
+    message = request.POST['message']
+    username = request.POST['username']
+    room_id = request.POST['room_id']
+
+    new_message = Message.objects.create(value=message, user=username, room=room_id)
+    new_message.save()
+    return HttpResponse('Message sent successfully')
+
+def getMessages(request, room):
+    room_details = Room.objects.get(name=room)
+
+    messages = Message.objects.filter(room=room_details.id)
+    return JsonResponse({"messages":list(messages.values())})

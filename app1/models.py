@@ -40,3 +40,4 @@ class Stats(models.Model):
 
 class Request(models.Model):
     player =  models.ForeignKey(User, on_delete=models.CASCADE)
+
