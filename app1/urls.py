@@ -36,4 +36,9 @@ urlpatterns = [
     path('reject_request/<str:username>/', views.reject_request, name='reject_request'),
     path('player_profile/<str:username>/', views.player_profile, name='player_profile'),
     path('all_profiles/', views.all_profiles, name='all_profiles'),
+    path('all_players/', views.all_players, name='all_players'),
+    path('player_profile_ForCoach/<str:username>/', views.player_profile_ForCoach, name='player_profile_ForCoach'),
+    path('end_of_month/', views.end_of_month, name='end_of_month'),
+
+
 ]

@@ -2,7 +2,21 @@
 
 {% block content %}
 <button type="submit" class="btn btn-outline-danger btn-sm" onclick="window.location.href='{% url 'all_profiles' %}'">View All Members</button>
-  <h1>Team List</h1>
+<h1>End of Month</h1>
+<form action="{% url 'end_of_month' %}" method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-primary" id="end-of-month-btn">End Of Month</button>
+</form>
+{% if messages %}
+
+  <ul class="messages">
+    {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+  
+<h1>Team List</h1>
   <a href="{% url 'add_team' %}">Create Team</a>
   <ul>
   {% for team in teams %}
@@ -39,4 +53,11 @@
     </li>
   {% endfor %}
   </ul>
+
+  <script>
+    const endOfMonthBtn = document.getElementById('end-of-month-btn');
+    endOfMonthBtn.addEventListener('click', () => {
+      alert('Are you sure you want to increase the due amount of all players?');
+    });
+  </script>
 {% endblock %}

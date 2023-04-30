@@ -6,7 +6,7 @@ class Profile(models.Model):
     favorite_book = models.CharField(max_length=30)
     favorite_food = models.CharField(max_length=30)
     favorite_holiday = models.CharField(max_length=30)
-    due_payment = models.IntegerField()
+    due_payment = models.IntegerField(blank=True, null=True)
     accepted = models.BooleanField()
     monthly_payment = models.IntegerField(blank=True, null=True)
     def __str__(self):

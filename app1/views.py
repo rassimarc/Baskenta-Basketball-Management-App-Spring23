@@ -344,3 +344,19 @@ def all_profiles(request):
     profiles = Profile.objects.all()
     return render(request, 'all_members.html', {'profiles': profiles})
 
+def all_players(request):
+    profiles = Profile.objects.all()
+    return render(request, 'all_players.html', {'profiles': profiles})
+
+def player_profile_ForCoach(request, username):
+    user = User.objects.get(username=username)
+    profile = user.profile
+    return render(request, 'player_profile_ForCoach.html', {'user': user, 'profile': profile})
+
+def end_of_month(request):
+    profile = Profile.objects.all()
+    for player in profile:
+        player.due_payment += player.monthly_payment
+        player.save()
+    messages.success(request, 'Monthly payment added')
+    return redirect('management')
