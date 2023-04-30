@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<button type="submit" class="btn btn-outline-danger btn-sm" onclick="window.location.href='{% url 'all_profiles' %}'">View All Members</button>
+<button type="submit" class="btn btn-outline-danger btn-sm" onclick="window.location.href='{% url 'all_profiles' %}'">View All Members</button><br><br>
+<button type="submit" class="btn btn-outline-danger btn-sm" onclick="window.location.href='{% url 'aid_requests' %}'">View Financial Aid Requests</button>
 <h1>End of Month</h1>
 <form action="{% url 'end_of_month' %}" method="post">
   {% csrf_token %}
