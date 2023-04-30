@@ -47,12 +47,42 @@
     
     </style>
 
-    <form id="post-form" method="POST" action="checkview">
-        {% csrf_token %}
-        <label>Room Name</label>
-        <input type="text" name="room_name" id="room_name" width="100px" />
-        <input type="submit" value="Enter Room">
-    </form>
+<form id="post-form" method="POST" action="checkview">
+  {% csrf_token %}
+  <label for="room_name">Team Name</label>
+  <select name="room_name" id="room_name" required>
+    <option selected disabled value="">- - - -</option>
+
+    {% for team in teams %} 
+
+    {% if user.profile.usertype == "Manager"%} 
+
+      <option value="{{ team.name }}">{{ team.name }}</option>
+
+    {% elif user.profile.usertype == "Player" %}
+
+    {% for player in team.players.all %} 
+
+    {% if player.user.username == user.username %} 
+    <option value="{{ team.name }}">{{ team.name }}</option>
+    {% endif %} 
+    {% endfor %} 
+
+    {% elif user.profile.usertype == "Coach" %} 
+
+    {% if team.coach.user.username == user.username %} 
+
+    <option value="{{ team.name }}">{{ team.name }}</option>
+    {% endif %} 
+
+    {% endif %} 
+
+    {% endfor %} 
+  </select>
+  <br>
+  <input type="submit" value="Enter Your Team Chat">
+</form>
+
 </div>
 
 

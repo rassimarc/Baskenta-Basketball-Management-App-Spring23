@@ -7,7 +7,6 @@ from django.contrib import messages
 from chat.models import *
 from django.http import HttpResponse, JsonResponse
 
-
 def home(request):
     return render(request, 'home.html')
 
@@ -162,6 +161,10 @@ def add_team(request):
             if Team.objects.filter(name=name).exists():
                 form.add_error('name', 'A team with this name already exists.')
             else:
+                if not Room.objects.filter(name=room).exists():
+                    new_room = Room.objects.create(name=name)
+                    new_room.save()
+                    
                 form.save()
                 return redirect('management')    
     else:
@@ -172,20 +175,25 @@ def add_team(request):
     return render(request, 'add_team.html', {'form': form, 'submitted': submitted})
 
 def update_team(request, team_name):
-	team = Team.objects.get(name=team_name)
-	form = TeamFormAdmin(request.POST or None, request.FILES or None, instance=team)
-	if form.is_valid():
-		form.save()
-		return redirect('management')
-	return render(request, 'update_team.html', 
-		{'team': team,
-		'form':form})
+    room = get_object_or_404(Room, name=team_name)
+    team = Team.objects.get(name=team_name)
+    form = TeamFormAdmin(request.POST or None, request.FILES or None, instance=team)
+    if form.is_valid():
+        team = form.save(commit=False)
+        room.name = team.name
+        room.save()
+        form.save()
+        return redirect('management')
+    
+    return render(request, 'update_team.html', {'team':team, 'form':form})
 
 def delete_team(request,team_name):
     if request.method == "POST":
         if request.POST.get("confirm") == "yes":
             team = Team.objects.get(name=team_name)
+            room = Room.objects.get(name=team_name)
             team.delete()
+            room.delete()
             return redirect('management')
         else:
             return redirect("management")    
@@ -264,6 +272,7 @@ def remove(request):
     event.delete()
     data = {}
     return JsonResponse(data)
+
 def add_stat(request):
     submitted = False
     if request.method == "POST":
@@ -328,9 +337,10 @@ def accept_request(request, username):
 
 # Create your views here.
 def chat_home(request):
+    teams=Team.objects.all()
     if not request.user.is_authenticated:
         return redirect("login")
-    return render(request, 'chat_home.html')
+    return render(request, 'chat_home.html', {'teams':teams})
 
 def room(request, room):
     username = request.user.get_full_name()
@@ -344,14 +354,8 @@ def room(request, room):
 def checkview(request):
     room = request.POST['room_name']
     username = request.user.get_full_name()
-
-    if Room.objects.filter(name=room).exists():
-        return redirect(room+'/?username='+username)
-    else:
-        new_room = Room.objects.create(name=room)
-        new_room.save()
-        return redirect(room+'/?username='+username)
-
+    return redirect(room+'/?username='+username) 
+    
 def send(request):
     message = request.POST['message']
     username = request.user.get_full_name()
