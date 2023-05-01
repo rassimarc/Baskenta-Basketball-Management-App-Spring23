@@ -38,20 +38,3 @@ class Stats(models.Model):
 
     def __str__(self):
         return self.name
-
-class Request(models.Model):  
-    player =  models.ForeignKey(User, on_delete=models.CASCADE)
-
-class FinancialAid(models.Model):
-    player_name = models.CharField(max_length=100, blank=True, null=True)
-    player_username = models.CharField(max_length=100, blank=True, null=True)
-    player_age = models.IntegerField(blank=True, null=True)
-    player_email = models.EmailField(blank=True, null=True)
-    annual_income = models.IntegerField(blank=True, null=True)
-    family_size = models.IntegerField(blank=True, null=True)
-    reason = models.TextField(blank=True, null=True)
-    status = models.CharField(max_length=100, default="Pending")
-
-    def __str__(self):
-        return f"{self.player_name} - Requested Financial Aid"
-

@@ -4,8 +4,8 @@ from django.shortcuts import render, redirect
 from app1.models import *
 from .forms import *
 from django.contrib import messages
-
-
+from chat.models import *
+from django.http import HttpResponse, JsonResponse
 
 def home(request):
     return render(request, 'home.html')
@@ -13,13 +13,6 @@ def home(request):
 def aboutus(request):
     return render(request, 'aboutus.html')
         
-
-
-def communication(request):
-    if not request.user.is_authenticated:
-        return redirect("login")
-    return render(request, 'communication.html')
-
 def management(request):
     teams=Team.objects.all()	
     if not request.user.is_authenticated:
@@ -148,7 +141,7 @@ def forgot_password(request):
             new_password = form.cleaned_data.get('new_password')
             user = User.objects.get(username=username)
             if user is not None:
-                if user.profile.favorite_book == form.cleaned_data.get('favorite_book') and user.profile.favorite_food == form.cleaned_data.get('favorite_food') and user.profile.favorite_holiday == form.cleaned_data.get('favorite_holiday') and user.profile.favorite_fictional_character == form.cleaned_data.get('favorite_fictional_character'):
+                if user.profile.favorite_book == form.cleaned_data.get('favorite_book') and user.profile.favorite_food == form.cleaned_data.get('favorite_food') and user.profile.favorite_holiday == form.cleaned_data.get('favorite_holiday'):
                     user.set_password(new_password)
                     user.save()
                     return redirect("login")
@@ -168,6 +161,10 @@ def add_team(request):
             if Team.objects.filter(name=name).exists():
                 form.add_error('name', 'A team with this name already exists.')
             else:
+                if not Room.objects.filter(name=room).exists():
+                    new_room = Room.objects.create(name=name)
+                    new_room.save()
+                    
                 form.save()
                 return redirect('management')    
     else:
@@ -178,20 +175,25 @@ def add_team(request):
     return render(request, 'add_team.html', {'form': form, 'submitted': submitted})
 
 def update_team(request, team_name):
-	team = Team.objects.get(name=team_name)
-	form = TeamFormAdmin(request.POST or None, request.FILES or None, instance=team)
-	if form.is_valid():
-		form.save()
-		return redirect('management')
-	return render(request, 'update_team.html', 
-		{'team': team,
-		'form':form})
+    room = get_object_or_404(Room, name=team_name)
+    team = Team.objects.get(name=team_name)
+    form = TeamFormAdmin(request.POST or None, request.FILES or None, instance=team)
+    if form.is_valid():
+        team = form.save(commit=False)
+        room.name = team.name
+        room.save()
+        form.save()
+        return redirect('management')
+    
+    return render(request, 'update_team.html', {'team':team, 'form':form})
 
 def delete_team(request,team_name):
     if request.method == "POST":
         if request.POST.get("confirm") == "yes":
             team = Team.objects.get(name=team_name)
+            room = Room.objects.get(name=team_name)
             team.delete()
+            room.delete()
             return redirect('management')
         else:
             return redirect("management")    
@@ -270,6 +272,7 @@ def remove(request):
     event.delete()
     data = {}
     return JsonResponse(data)
+
 def add_stat(request):
     submitted = False
     if request.method == "POST":
@@ -334,77 +337,4 @@ def accept_request(request, username):
     user.profile.monthly_payment = due_amount  # set the monthly_payment value to the due_amount value
     user.profile.save()
     return redirect("management")
-
-def player_profile(request, username):
-    user = User.objects.get(username=username)
-    profile = user.profile
-    return render(request, 'player_profile.html', {'user': user, 'profile': profile})
-
-def all_profiles(request):
-    profiles = Profile.objects.all()
-    return render(request, 'all_members.html', {'profiles': profiles})
-
-def all_players(request):
-    profiles = Profile.objects.all()
-    return render(request, 'all_players.html', {'profiles': profiles})
-
-def player_profile_ForCoach(request, username):
-    user = User.objects.get(username=username)
-    profile = user.profile
-    return render(request, 'player_profile_ForCoach.html', {'user': user, 'profile': profile})
-
-def end_of_month(request):
-    profile = Profile.objects.all()
-    for player in profile:
-        player.due_payment += player.monthly_payment
-        player.save()
-    messages.success(request, 'Monthly payment added')
-    return redirect('management')
-
-from django.shortcuts import render, redirect
-from .forms import FinancialAidForm
-
-def financial_aid(request):
-    if request.method == 'POST':
-        form = FinancialAidForm(request.POST)
-        if form.is_valid():
-            # Save the form data to the database or do something else with it
-            player_name = form.cleaned_data['player_name']
-            player_username = form.cleaned_data['player_username']
-            player_age = form.cleaned_data['player_age']
-            player_email = form.cleaned_data['player_email']
-            annual_income = form.cleaned_data['annual_income']
-            family_size = form.cleaned_data['family_size']
-            reason = form.cleaned_data['reason']
-            
-            financial_aid = FinancialAid(player_name=player_name,player_username=player_username, player_age=player_age, player_email=player_email, annual_income=annual_income, family_size=family_size, reason=reason)
-            financial_aid.save()
-            return redirect('financial_aid')
-    else:
-        form = FinancialAidForm()
-    return render(request, 'financial_aid.html', {'form': form})
-
-
-def aid_requests(request):
-    profiles = Profile.objects.all()
-    aid_requests = FinancialAid.objects.all()
-    return render(request, 'aid_requests.html', {'aid_requests': aid_requests, 'profiles': profiles})
-
-def accept_aid_request(request, request_id):
-    aid_request = get_object_or_404(FinancialAid, pk=request_id)
-
-    if request.method == "POST":
-        if "accept" in request.POST:
-            percent_aid = int(request.POST["percent_aid"])
-            aid_request.status = "accepted"
-            aid_request.percent_aid = percent_aid
-            aid_request.save()
-            player = User.objects.get(username=aid_request.player_username).profile
-            player.monthly_payment *= (100 - percent_aid) / 100
-            player.save()
-        elif "reject" in request.POST:
-            aid_request.status = "rejected"
-            aid_request.percent_aid = 0
-            aid_request.save()
-    return redirect('aid_requests')
 

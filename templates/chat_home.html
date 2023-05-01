@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Communication
+{% endblock %}
+{% block content %}
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% load static %}
+  <link rel="stylesheet"  href="{% static 'chat_home_style.css' %}">
+</head>
+<div class ='bb'>
+<body>
+
+<div align="center">
+    <h2>Baskenta Chat</h2>
+</div>
+
+
+<div class="container">
+    <style>
+    input[type=text], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid darkred;
+    border-radius: 4px;
+    box-sizing: border-box;
+    }
+
+    input[type=submit] {
+    width: 100%;
+    background-color: darkred;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    }
+
+    input[type=submit]:hover {
+    background-color: darkred;
+    }
+
+    
+    </style>
+
+<form id="post-form" method="POST" action="checkview">
+  {% csrf_token %}
+  <label for="room_name">Team Name</label>
+  <select name="room_name" id="room_name" required>
+    <option selected disabled value="">- - - -</option>
+
+    {% for team in teams %} 
+
+    {% if user.profile.usertype == "Manager"%} 
+
+      <option value="{{ team.name }}">{{ team.name }}</option>
+
+    {% elif user.profile.usertype == "Player" %}
+
+    {% for player in team.players.all %} 
+
+    {% if player.user.username == user.username %} 
+    <option value="{{ team.name }}">{{ team.name }}</option>
+    {% endif %} 
+    {% endfor %} 
+
+    {% elif user.profile.usertype == "Coach" %} 
+
+    {% if team.coach.user.username == user.username %} 
+
+    <option value="{{ team.name }}">{{ team.name }}</option>
+    {% endif %} 
+
+    {% endif %} 
+
+    {% endfor %} 
+  </select>
+  <br>
+  <input type="submit" value="Enter Your Team Chat">
+</form>
+
+</div>
+
+
+</body>
+</div>
+
+{% endblock %}
