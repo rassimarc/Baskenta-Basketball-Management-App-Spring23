@@ -2,8 +2,11 @@
 
 {% block content %}
 <h1>Payment</h1>
-<p> Due payment: {{ due_payment }} </p> 
-<a href="{% url 'payment' %}">Pay</a>
+<p> Due payment: {{ user.profile.due_payment }} </p> 
+<p> Monthly payment: {{ user.profile.monthly_payment }} </p>
+<button type="submit" class="btn btn-outline-danger btn-sm" onclick="window.location.href='{% url 'payment' %}'">Pay</button>
+<h1>Financial Aid</h1>
+<button type="submit" class="btn btn-outline-danger btn-sm" onclick="window.location.href='{% url 'financial_aid' %}'">Request Financial Aid</button>
 <h1>Team List</h1>
   <ul>
   {% for team in teams %}

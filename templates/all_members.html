@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content %}
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>All Profiles</title>
+    <style>
+      .table {
+        border-collapse: collapse;
+      }
+
+      .table th,
+      .table td {
+        border: 1px solid black;
+        padding: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>All Profiles</h1>
+    <form id="filter-form">
+      <label for="usertype-filter">Filter by Usertype:</label>
+      <select id="usertype-filter">
+        <option value="">All</option>
+        <option value="Manager">Manager</option>
+        <option value="Coach">Coach</option>
+        <option value="Player">Player</option>
+      </select>
+    </form>
+    <br>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>User Type</th>
+          <th>Due Payment</th>
+        </tr>
+      </thead>
+      <tbody id="profiles-table">
+        {% for profile in profiles %}
+          <tr data-usertype="{{ profile.usertype }}">
+            <td><a href="{% url 'player_profile' username=profile.user.username %}">{{ profile.user.username }}</a></td>
+            <td>{{ profile.usertype }}</td>
+            <td>{{ profile.due_payment }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <script>
+      // Get references to the form and the table
+      const filterForm = document.getElementById('filter-form');
+      const profilesTable = document.getElementById('profiles-table');
+
+      // Add an event listener to the form's select element
+      filterForm.addEventListener('change', function() {
+        // Get the selected value
+        const selectedUsertype = this.elements['usertype-filter'].value;
+
+        // Show or hide rows based on the selected value
+        for (let row of profilesTable.rows) {
+          if (selectedUsertype === '' || row.dataset.usertype === selectedUsertype) {
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
+{% endblock %}

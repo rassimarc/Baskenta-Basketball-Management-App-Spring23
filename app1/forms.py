@@ -64,3 +64,35 @@ class PlayerStat(ModelForm):
             'position': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Position'}),
 			'stat1': forms.TextInput(attrs={'class':'form-control', 'placeholder':'stat1'}),
 		}
+
+# class AcceptRequestForm(forms.Form):
+#     due_amount = forms.IntegerField(min_value=1, required=True, help_text="Required")
+#     class Meta:
+#         model = User
+#         fields = ('due_amount')
+
+class SignupRequestForm(forms.Form):
+    due_amount = forms.IntegerField(label='Due amount')
+    
+class FinancialAidForm(forms.Form):
+    player_name = forms.CharField(label="Full Name", max_length=100)
+    player_username = forms.CharField(label="Username", max_length=100)
+    player_age = forms.IntegerField(label="Age", min_value=1, max_value=99)
+    player_email = forms.EmailField(label="Email")
+    annual_income = forms.IntegerField(label="Annual Income", min_value=1, max_value=100000000)
+    family_size = forms.IntegerField(label="Family Size", min_value=1, max_value=20)
+    reason = forms.CharField(label="Reason for Financial Aid", widget=forms.Textarea(attrs={"rows": 5, "cols": 30}))
+    
+# the following form is for the manager to accept or reject a player's request, and to enter the percentage of financial aid to be given:
+# class AcceptAidRequestForm(forms.Form):
+#     percentage = forms.IntegerField(label="Percentage of Financial Aid", min_value=0, max_value=100)
+#     is_accepted = forms.ChoiceField(choices=[(True, 'Accept'), (False, 'Decline')], widget=forms.RadioSelect)
+
+#     class Meta:
+#         model = User
+#         fields = ('percentage', 'is_accepted')
+class AcceptAidRequestForm(forms.Form):
+    percent_aid = forms.IntegerField(min_value=0, max_value=100, required=True)
+
+    
+     

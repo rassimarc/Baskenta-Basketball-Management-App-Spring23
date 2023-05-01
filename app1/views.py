@@ -18,7 +18,7 @@ def management(request):
     if not request.user.is_authenticated:
         return redirect("login")
     if request.user.profile.usertype == "Player":
-        return render(request, 'management_player.html', {'teams':teams, 'due_payment':request.user.profile.due_payment})
+        return render(request, 'management_player.html', {'teams':teams})
     if request.user.profile.usertype == "Coach":
         return render(request, 'management_coach.html', {'teams':teams})
     if request.user.profile.usertype == "Manager":
@@ -77,7 +77,7 @@ def signup_player(request):
         if form.is_valid():
             # Save the user's information to the database
             user = form.save()
-            profile = Profile.objects.create(usertype="Player",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),due_payment=0,accepted=False)
+            profile = Profile.objects.create(usertype="Player",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),due_payment=0,accepted=False,monthly_payment=0)
             user.profile.save()
             request = Request.objects.create(player=user)
             request.save()
@@ -94,7 +94,7 @@ def signup_coach(request):
         if form.is_valid():
             # Save the user's information to the database
             user = form.save()
-            Profile.objects.create(usertype="Coach",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),due_payment=0,accepted=True)
+            Profile.objects.create(usertype="Coach",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),due_payment=0,accepted=True,monthly_payment=0)
             user.profile.save()
 
             # Redirect the user to the login page
@@ -109,7 +109,7 @@ def signup_manager(request):
         if form.is_valid():
             # Save the user's information to the database
             user = form.save()
-            Profile.objects.create(usertype="Manager",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),due_payment=0,accepted=True)
+            Profile.objects.create(usertype="Manager",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),due_payment=0,accepted=True, monthly_payment=0)
             user.profile.save()
 
             # Redirect the user to the login page
@@ -326,47 +326,15 @@ def reject_request(request, username):
     request.delete()
     user.delete()
     return redirect("management")
+
 def accept_request(request, username):
     user = User.objects.get(username=username)
-    request = Request.objects.get(player=user)
-    request.delete()
+    signup_request = Request.objects.get(player=user)
+    due_amount = request.POST.get('due_amount')  # get the due_amount value from the POST request
+    signup_request.delete()
     user.profile.accepted = True
+    user.profile.due_payment = due_amount  # set the due_payment value to the due_amount value
+    user.profile.monthly_payment = due_amount  # set the monthly_payment value to the due_amount value
     user.profile.save()
     return redirect("management")
 
-
-# Create your views here.
-def chat_home(request):
-    teams=Team.objects.all()
-    if not request.user.is_authenticated:
-        return redirect("login")
-    return render(request, 'chat_home.html', {'teams':teams})
-
-def room(request, room):
-    username = request.user.get_full_name()
-    room_details = Room.objects.get(name=room)
-    return render(request, 'room.html', {
-        'username': username,
-        'room': room,
-        'room_details': room_details
-    })
-
-def checkview(request):
-    room = request.POST['room_name']
-    username = request.user.get_full_name()
-    return redirect(room+'/?username='+username) 
-    
-def send(request):
-    message = request.POST['message']
-    username = request.user.get_full_name()
-    room_id = request.POST['room_id']
-
-    new_message = Message.objects.create(value=message, user=username, room=room_id)
-    new_message.save()
-    return HttpResponse('Message sent successfully')
-
-def getMessages(request, room):
-    room_details = Room.objects.get(name=room)
-
-    messages = Message.objects.filter(room=room_details.id)
-    return JsonResponse({"messages":list(messages.values())})

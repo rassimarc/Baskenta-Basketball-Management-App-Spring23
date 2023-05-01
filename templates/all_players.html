@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>All Profiles</title>
+    <style>
+      .table {
+        border-collapse: collapse;
+      }
+
+      .table th,
+      .table td {
+        border: 1px solid black;
+        padding: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>All Profiles</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>User Type</th>
+          <!-- <th>Due Payment</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        {% for profile in profiles %}
+          {% if profile.usertype == 'Player' and profile.played_teams.all %}
+            {% for team in profile.played_teams.all %}
+              {% if team.coach == request.user.profile %}
+                <tr>
+                  <td><a href="{% url 'player_profile_ForCoach' username=profile.user.username %}">{{ profile.user.username }}</a></td>
+                  <td>{{ profile.usertype }}</td>
+                  <!-- <td>{{ profile.due_payment }}</td> -->
+                </tr>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>
+{% endblock %}

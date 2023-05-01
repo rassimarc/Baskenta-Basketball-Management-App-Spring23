@@ -35,4 +35,14 @@ urlpatterns = [
     path('not_accepted/', views.not_accepted, name="not_accepted"),
     path('accept_request/<str:username>/', views.accept_request, name='accept_request'),
     path('reject_request/<str:username>/', views.reject_request, name='reject_request'),
+    path('player_profile/<str:username>/', views.player_profile, name='player_profile'),
+    path('all_profiles/', views.all_profiles, name='all_profiles'),
+    path('all_players/', views.all_players, name='all_players'),
+    path('player_profile_ForCoach/<str:username>/', views.player_profile_ForCoach, name='player_profile_ForCoach'),
+    path('end_of_month/', views.end_of_month, name='end_of_month'),
+    path('financial_aid/', views.financial_aid, name='financial_aid'),
+    path('aid_requests/', views.aid_requests, name='aid_requests'),
+    path('accept_aid_request/<int:request_id>/', views.accept_aid_request, name='accept_aid_request'),
+    
+
 ]

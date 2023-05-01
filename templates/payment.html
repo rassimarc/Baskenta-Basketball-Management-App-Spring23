@@ -6,7 +6,7 @@
   <form method="post">
     {% csrf_token %}
     <label for="amount_paid">Amount to be paid:</label>
-    <input type="number" id="amount_paid" name="amount_paid" required>
+    <input type="number" id="amount_paid" name="amount_paid" required min="1">
     <button type="submit">Pay</button>
   </form>
   {% if amount_paid %}

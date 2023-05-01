@@ -6,8 +6,9 @@ class Profile(models.Model):
     favorite_book = models.CharField(max_length=30)
     favorite_food = models.CharField(max_length=30)
     favorite_holiday = models.CharField(max_length=30)
-    due_payment = models.IntegerField()
+    due_payment = models.IntegerField(blank=True, null=True)
     accepted = models.BooleanField()
+    monthly_payment = models.IntegerField(blank=True, null=True)
     def __str__(self):
         return self.user.username
 
@@ -37,7 +38,3 @@ class Stats(models.Model):
 
     def __str__(self):
         return self.name
-
-class Request(models.Model):
-    player =  models.ForeignKey(User, on_delete=models.CASCADE)
-
