@@ -58,7 +58,11 @@
   <script>
     const endOfMonthBtn = document.getElementById('end-of-month-btn');
     endOfMonthBtn.addEventListener('click', () => {
-      alert('Are you sure you want to increase the due amount of all players?');
+      const confirmed = confirm('Are you sure you want to increase the due amount of all players?');
+      if (!confirmed) {
+        event.preventDefault(); // prevent the form submission if Cancel is clicked
+      }
     });
   </script>
+  
 {% endblock %}
