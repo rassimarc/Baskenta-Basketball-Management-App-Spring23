@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<button type="submit" class="btn btn-outline-danger btn-sm" onclick="window.location.href='{% url 'all_players' %}'">View All Players</button>
+<button type="submit" class="btn btn-outline-danger btn-sm" onclick="window.location.href='{% url 'all_players' %}'">View All My Players</button>
   <h1>Team List</h1>
   <ul>
   {% for team in teams %}
