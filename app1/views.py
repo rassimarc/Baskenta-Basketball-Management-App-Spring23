@@ -4,8 +4,9 @@ from django.shortcuts import render, redirect
 from app1.models import *
 from .forms import *
 from django.contrib import messages
-
-
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
+from django.http import Http404
 
 def home(request):
     return render(request, 'home.html')
@@ -156,8 +157,6 @@ def forgot_password(request):
         form = ResetPasswordForm()
     return render(request, 'forgotpassword.html', {'form': form})
 
-from django.shortcuts import get_object_or_404
-from django.http import Http404
 
 def add_team(request):
     submitted = False
@@ -213,7 +212,7 @@ def Edit_Personal_Info(request):
 
 
 
-from django.http import JsonResponse 
+ 
   
 
 def schedule(request):
