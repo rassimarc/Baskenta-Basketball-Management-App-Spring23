@@ -3,6 +3,7 @@
 {% block content %}
   <h1>Statistics List</h1>
   <a href="{% url 'add_stat' %}">Create stat</a>
+  <a href="{% url 'spin_the_wheel' %}">Spin_the_wheel</a>
   <ul>
   {% for stat in stats %}
     <li>
@@ -13,9 +14,8 @@
       <div class="card-footer text-muted">          
         <a href="{% url 'update_stat' stat.name %}" class="btn btn-outline-danger btn-sm">Edit Team</a> 
       </div>
-  {% endif %}
+      {% endif %}
     </li>
   {% endfor %}
-
   </ul>
 {% endblock %}

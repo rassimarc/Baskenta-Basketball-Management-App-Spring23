@@ -62,5 +62,9 @@ class PlayerStat(ModelForm):
 		widgets = {
 			'name': forms.Select(attrs={'class':'form-select', 'placeholder':'name'}),
             'position': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Position'}),
-			'stat1': forms.TextInput(attrs={'class':'form-control', 'placeholder':'stat1'}),
+			'stat1': forms.NumberInput(attrs={'class':'form-control', 'placeholder':'stat1'}),
 		}
+
+
+class ChatForm(forms.Form):
+    message = forms.CharField(label='Message', max_length=255, widget=forms.TextInput(attrs={'placeholder': 'Type your message...'}))

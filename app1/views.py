@@ -6,7 +6,6 @@ from .forms import *
 from django.contrib import messages
 
 
-
 def home(request):
     return render(request, 'home.html')
 
@@ -139,6 +138,40 @@ def delete_account(request):
             return redirect("myuser") 
 
     return render(request, 'confirm_delete_account.html')
+
+
+from django.http import JsonResponse, HttpResponseBadRequest
+import openai
+
+def chat_view(request):
+    if request.method == 'POST':
+        form = ChatForm(request.POST)
+        if form.is_valid():
+            user_message = form.cleaned_data['message']
+            # Get the user's message from the request
+
+            # Set up the OpenAI API key
+            openai.api_key = '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'
+
+            # Use the OpenAI API to generate a response
+            response = openai.Completion.create(
+                engine='davinci',
+                prompt=user_message,
+                max_tokens=60,
+                n=1,
+                stop=None,
+                temperature=0.5,
+            )
+
+            # Extract the generated text from the response
+            chat_response = response.choices[0].text.strip()
+
+            # Return the response as a JSON object
+            return render(request, 'chat.html', {'response': chat_response})
+    else:
+        form = ChatForm()
+    return render(request, 'chat.html', {'form': form})
+
 
 def forgot_password(request):
     if request.method == 'POST':
@@ -330,3 +363,61 @@ def accept_request(request, username):
     user.profile.accepted = True
     user.profile.save()
     return redirect("management")
+
+from django.http import JsonResponse, HttpResponseBadRequest
+import openai
+
+def chat_view(request):
+    if request.method == 'POST':
+        form = ChatForm(request.POST)
+        if form.is_valid():
+            user_message = form.cleaned_data['message']
+            # Get the user's message from the request
+
+            # Set up the OpenAI API key
+            openai.api_key = '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'
+
+            # Use the OpenAI API to generate a response
+            response = openai.Completion.create(
+                engine='davinci',
+                prompt=user_message,
+                max_tokens=60,
+                n=1,
+                stop=None,
+                temperature=0.5,
+            )
+
+            # Extract the generated text from the response
+            chat_response = response.choices[0].text.strip()
+
+            # Return the response as a JSON object
+            return render(request, 'chat.html', {'response': chat_response})
+    else:
+        form = ChatForm()
+    return render(request, 'chat.html', {'form': form})
+
+
+from django.shortcuts import render
+from .models import Stats
+import random
+
+def spin_the_wheel(request):
+    # Get all players' stats
+    player_stats = Stats.objects.all()
+
+    # Find the player with the highest rating
+    top_player = max(player_stats, key=lambda p: p.stat1)
+
+    # Check if the user has already spun the wheel
+    used_spin = request.session.get('used_spin', False)
+
+    # Randomly decide whether to give a discount or not
+    spin_result = None
+    spin_outcomes = ["nothing", "nothing", "nothing", "10% off", "5% off", "15% off"]
+    if random.random() < 0.5 and not used_spin:
+        spin_result = random.choice(spin_outcomes)
+        request.session['used_spin'] = True
+    else:
+        spin_result = "nothing"
+
+    return render(request, 'spin_the_wheel.html', {'player': top_player, 'spin_result': spin_result, 'used_spin': used_spin})
