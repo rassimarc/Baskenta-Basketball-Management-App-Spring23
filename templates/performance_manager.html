@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Statistics List</h1>
+  <ul>
+  {% for stat in stats %}
+    <li>
+      <strong>Name:</strong> {{ stat.name }}<br>
+      <strong>Position:</strong> {{ stat.position }}<br>
+      <strong>Points per game (PPG):</strong> {{ stat.PPG }}<br>
+      <strong>Rebounds per game (RPG):</strong> {{ stat.RPG }}<br>
+      <strong>Assists per game (APG):</strong> {{ stat.APG }}<br>
+      <strong>Steals per game (SPG):</strong> {{ stat.SPG }}<br>
+      <strong>Blocks per game (BPG):</strong> {{ stat.BPG }}<br>
+      <strong>Turnovers per game (TOVPG):</strong> {{ stat.TOVPG }}<br>
+      <strong>Minutes per game (MPG):</strong> {{ stat.MPG }}<br>
+      <strong>Rating:</strong> {{ stat.rating }}<br>
+    </li>
+  {% endfor %}
+
+  </ul>
+{% endblock %}

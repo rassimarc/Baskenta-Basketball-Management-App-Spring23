@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 
 from django.forms import ModelForm
-from .models import Team, Stats
+from .models import *
 
 
 class SignupForm(UserCreationForm):
@@ -55,25 +55,48 @@ class UserUpdateForm(UserChangeForm):
         
 
 class PlayerStat(ModelForm):
-	class Meta:
-		model = Stats
-		fields = ('name', 'position', 'stat1')
-		labels = {
-			'name': 'name',
-			'position': ' ',
-			'stat1': ' ',
-		}
-		widgets = {
-			'name': forms.Select(attrs={'class':'form-select', 'placeholder':'name'}),
-            'position': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Position'}),
-			'stat1': forms.TextInput(attrs={'class':'form-control', 'placeholder':'stat1'}),
-		}
+    class Meta:
+        model = Stats
+        fields = ('name', 'position', 'PPG', 'RPG', 'APG', 'SPG', 'BPG', 'TOVPG', 'MPG', 'rating')
+        labels = {
+            'name': 'name',
+            'position': ' ',
+            'PPG': ' ',
+            'RPG': ' ',
+            'APG': ' ',
+            'SPG': ' ',
+            'BPG': ' ',
+            'TOVPG': ' ',
+            'MPG': ' ',
+            'rating': ' ',
+        }
+        widgets = {
+            'name': forms.Select(attrs={'class': 'form-select', 'placeholder': 'name'}),
+            'position': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Position'}),
+            'PPG': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'PPG'}),
+            'RPG': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'RPG'}),
+            'APG': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'APG'}),
+            'SPG': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'SPG'}),
+            'BPG': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'BPG'}),
+            'TOVPG': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'TOVPG'}),
+            'MPG': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'MPG'}),
+            'rating': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Rating', 'readonly': 'readonly'}),
+        }
 
-# class AcceptRequestForm(forms.Form):
-#     due_amount = forms.IntegerField(min_value=1, required=True, help_text="Required")
-#     class Meta:
-#         model = User
-#         fields = ('due_amount')
+    def clean(self):
+        cleaned_data = super().clean()
+        ppg = cleaned_data.get('PPG')
+        rpg = cleaned_data.get('RPG')
+        apg = cleaned_data.get('APG')
+        spg = cleaned_data.get('SPG')
+        bpg = cleaned_data.get('BPG')
+        tovpg = cleaned_data.get('TOVPG')
+        mpg = cleaned_data.get('MPG')
+        rating = (ppg*2.5) + (rpg*2.0) + (apg*1.5) + (spg * 1.0) + (bpg * 1.0) - (tovpg * 1.5) + (mpg * 0.5)
+        cleaned_data['rating'] = rating
+        return cleaned_data
+
+
 
 class SignupRequestForm(forms.Form):
     due_amount = forms.IntegerField(label='Due amount')
@@ -98,5 +121,19 @@ class FinancialAidForm(forms.Form):
 class AcceptAidRequestForm(forms.Form):
     percent_aid = forms.IntegerField(min_value=0, max_value=100, required=True)
 
-    
+
+class GameStat(ModelForm):
+	class Meta:
+		model = Games
+		fields = ('Team1', 'Team2', 'Winner')
+		labels = {
+			'Team1': 'Team1',
+			'Team2': 'Team2',
+			'Winner': ' ',
+		}
+		widgets = {
+			'Team1': forms.Select(attrs={'class':'form-select', 'placeholder':'Team1'}),
+			'Team2': forms.Select(attrs={'class':'form-select', 'placeholder':'Team2'}),
+            'Winner': forms.Select(attrs={'class':'form-select', 'placeholder':'Winner'}),
+		}
      

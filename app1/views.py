@@ -68,11 +68,18 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 
+
 def performance(request):
-    stats=Stats.objects.all()
+    stats=Stats.objects.all()	
+    games=Games.objects.all()
     if not request.user.is_authenticated:
         return redirect("login")
-    return render(request, 'performance.html',{'stats':stats})
+    if request.user.profile.usertype == "Player":
+        return render(request, 'performance_player.html', {'stats':stats, 'games':games})
+    if request.user.profile.usertype == "Coach":
+        return render(request, 'performance_coach.html', {'stats':stats,'games':games})
+    if request.user.profile.usertype == "Manager":
+        return render(request, 'performance_player.html', {'stats':stats,'games':games})
         
 def signup_player(request):
     if request.method == 'POST':
@@ -295,13 +302,24 @@ def add_stat(request):
 
     return render(request, 'add_stat.html', {'form': form, 'submitted': submitted})
 
-def update_stat(request, stats_name):
-    stats = Stats.objects.get(name=stats_name)
+def update_stat(request, stats_id):
+    stats = Stats.objects.get(id=stats_id)
     form = PlayerStat(request.POST or None, request.FILES or None, instance=stats)
     if form.is_valid():
         form.save()
         return redirect('performance')
     return render(request, 'update_stat.html', {'stats': stats, 'form': form})
+
+def delete_stat(request, stats_id):
+    if request.method == "POST":
+        if request.POST.get("confirm") == "yes":
+            stats = Stats.objects.get(id=stats_id)
+            stats.delete()
+            return redirect('performance')
+        else:
+            return redirect("performance")    
+
+    return render(request, 'confirm_delete_stat.html')
 
 def payment(request):
     player_name = request.user.get_full_name() # Get the player's name
@@ -401,7 +419,7 @@ def end_of_month(request):
     for player in profile:
         player.due_payment += player.monthly_payment
         player.save()
-    messages.success(request, 'Monthly payment added')
+   #messages.success(request, 'Monthly payment added')
     return redirect('management')
 
 from django.shortcuts import render, redirect
@@ -451,3 +469,47 @@ def accept_aid_request(request, request_id):
             aid_request.save()
     return redirect('aid_requests')
 
+def add_game(request):
+    submitted = False
+    if request.method == "POST":
+        form = GameStat(request.POST)
+        if form.is_valid():
+            # Get the values of Team1 and Team2 from the form
+            team1 = form.cleaned_data['Team1']
+            team2 = form.cleaned_data['Team2']
+            
+            # Get the value of winner from the form
+            Winner = form.cleaned_data['Winner']
+            
+            # Check that winner is either Team1 or Team2
+            if Winner != team1 and Winner != team2:
+                form.add_error('Winner', 'Winner must be either Team1 or Team2')
+            else:
+                form.save()
+                return redirect('performance')    
+    else:
+        form = GameStat()
+        if 'submitted' in request.GET:
+            submitted = True
+
+    return render(request, 'add_game.html', {'form': form, 'submitted': submitted})
+
+
+def update_game(request, games_id):
+    games = Games.objects.get(id=games_id)
+    form = GameStat(request.POST or None, request.FILES or None, instance=games)
+    if form.is_valid():
+        form.save()
+        return redirect('performance')
+    return render(request, 'update_game.html', {'games': games, 'form': form})
+
+def delete_game(request, games_id):
+    if request.method == "POST":
+        if request.POST.get("confirm") == "yes":
+            games = Games.objects.get(id=games_id)
+            games.delete()
+            return redirect('performance')
+        else:
+            return redirect("performance")    
+
+    return render(request, 'confirm_delete_game.html')

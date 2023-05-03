@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <a href="{% url 'add_stat' %}">Add Player Statistics</a>
+  <a href="{% url 'add_game' %}">Add Game Record</a>
+  <h2>                               </h2>
+  <h2>                               </h2>
+  <h2>                               </h2>
+  <h1>Statistics List:</h1>
+  <ul>
+  {% for stat in stats %}
+    <li>
+      <strong>Name:</strong> {{ stat.name }}<br>
+      <strong>Position:</strong> {{ stat.position }}<br>
+      <strong>Points per game (PPG):</strong> {{ stat.PPG }}<br>
+      <strong>Rebounds per game (RPG):</strong> {{ stat.RPG }}<br>
+      <strong>Assists per game (APG):</strong> {{ stat.APG }}<br>
+      <strong>Steals per game (SPG):</strong> {{ stat.SPG }}<br>
+      <strong>Blocks per game (BPG):</strong> {{ stat.BPG }}<br>
+      <strong>Turnovers per game (TOVPG):</strong> {{ stat.TOVPG }}<br>
+      <strong>Minutes per game (MPG):</strong> {{ stat.MPG }}<br>
+      <strong>Rating:</strong> {{ stat.rating }}<br>
+
+      {% if user.is_authenticated %}
+      <div class="card-footer text-muted">          
+        <a href="{% url 'update_stat' stat.id %}" class="btn btn-outline-danger btn-sm">Edit Statistics</a> 
+        <a href="{% url 'delete_stat' stat.id %}" class="btn btn-outline-danger btn-sm">Delete Statistics</a>
+      </div>
+  {% endif %}
+    </li>
+  {% endfor %}
+  <h1>                    </h1>
+  <h1>                   </h1>
+  <h1>                 </h1>
+  <h1>Game Stats:</h1>
+  <ul>
+  {% for game in games %}
+    <li>
+      <strong>Team1:</strong> {{ game.Team1 }}<br>
+      <strong>Team2:</strong> {{ game.Team2 }}<br>
+      <strong>Winner:</strong> {{ game.Winner }}<br>
+      {% if user.is_authenticated %}
+      <div class="card-footer text-muted">          
+        <a href="{% url 'update_game' game.id %}" class="btn btn-outline-danger btn-sm">Edit Game</a> 
+        <a href="{% url 'delete_game' game.id %}" class="btn btn-outline-danger btn-sm">Delete Game</a>
+      </div>
+  {% endif %}
+    </li>
+  {% endfor %}
+
+  </ul>
+{% endblock %}
