@@ -1,31 +1,41 @@
-{% extends 'base.html' %}
-
-{% block title %}
-  Login 
-{% endblock %}
-
-{% block content %}
-
 <head>
   {% load static %}
   <link rel="stylesheet"  href="{% static 'login_style.css' %}">
-
 </head>
-
 <body>
-  <h2>Login</h2> <!-- Here is the title-->
-  <form method="post"> <!-- This is the form that contains the username and the password-->
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="button">Login</button> <!-- This is the button to login-->
-  </form>
-  <div class="signup-links">
-    <p> Don't have an account? </p> 
-    <a href="{% url 'signup_player' %}">Sign up as a player</a> <!-- This is the button for signup as player-->
-    <a href="{% url 'signup_coach' %}">Sign up as a coach</a> <!-- This is the button for signup as coach-->
-    <a href="{% url 'signup_manager' %}">Sign up as a manager</a> <!-- This is the button-->
-
   
-  <p> Forgot your password? <a href="{% url 'forgotpassword' %}" >Reset your password</a></p> <!-- This is the button for reset password-->
-  </div></body>
-{% endblock %}
+  <div class="login-container">
+    
+    <div class="login-image">
+      <img src="{% static 'login_picture.png' %}" alt="Login Image">
+    </div>
+    
+    <div class="login-form">
+      <div class="header">
+        <img src="{% static 'logo.png' %}" alt="Logo">
+        <div class="header-text">
+          <h1>Baskenta</h1>
+          <p>Basketball Management Club</p>
+          
+        </div>
+        
+      </div>
+      
+      <form method="post">
+        <h2>Login</h2>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button">Login</button>
+        <div class="signup-links">
+          <p> Don't have an account? </p> 
+          <a href="{% url 'signup_player' %}">Sign up as a player</a>
+          <a href="{% url 'signup_coach' %}">Sign up as a coach</a>
+          <a href="{% url 'signup_manager' %}">Sign up as a manager</a>
+          <p> Forgot your password? <a href="{% url 'forgotpassword' %}" >Reset your password</a></p>
+        </div> 
+      </form>
+      
+      
+    </div>
+  </div>
+</body>
