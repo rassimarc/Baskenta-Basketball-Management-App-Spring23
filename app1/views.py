@@ -84,7 +84,7 @@ def signup_player(request):
         if form.is_valid():
             # Save the user's information to the database
             user = form.save()
-            profile = Profile.objects.create(usertype="Player",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),due_payment=0,accepted=False,monthly_payment=0)
+            profile = Profile.objects.create(usertype="Player",user=user,favorite_book=form.cleaned_data.get('favorite_book'),favorite_food=form.cleaned_data.get('favorite_food'),favorite_holiday=form.cleaned_data.get('favorite_holiday'),due_payment=0,accepted=False,monthly_payment=0, age=form.cleaned_data.get('age'), height=form.cleaned_data.get('height'), weight=form.cleaned_data.get('weight'), position=form.cleaned_data.get('position') )
             user.profile.save()
             request = Request.objects.create(player=user)
             request.save()

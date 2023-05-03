@@ -3,6 +3,10 @@ from django.db import models
 class Profile(models.Model):
     usertype = models.CharField(max_length=30)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    age = models.IntegerField(blank=True, null=True)
+    height = models.IntegerField(blank=True, null=True)
+    weight = models.IntegerField(blank=True, null=True)
+    position = models.CharField(max_length=30, blank=True, null=True)
     favorite_book = models.CharField(max_length=30)
     favorite_food = models.CharField(max_length=30)
     favorite_holiday = models.CharField(max_length=30)
@@ -26,9 +30,6 @@ class Events(models.Model):
     start = models.DateTimeField(null=True, blank=True)
     end = models.DateTimeField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-
-
-
 
 
 class Stats(models.Model):

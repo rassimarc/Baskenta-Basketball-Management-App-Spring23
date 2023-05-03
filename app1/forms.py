@@ -10,12 +10,16 @@ class SignupForm(UserCreationForm):
     email = forms.EmailField(max_length=200, help_text='Required')
     first_name = forms.CharField(max_length=30, required=True, help_text='Required')
     last_name = forms.CharField(max_length=30, required=True, help_text='Required')
+    age = forms.IntegerField(required=True, help_text='Required')
+    height = forms.IntegerField(required=True, help_text='Required')
+    weight = forms.IntegerField(required=True, help_text='Required')
+    position = forms.CharField(max_length=30, required=True, help_text='Required')
     favorite_book = forms.CharField(max_length=30, required=True, help_text='Required')
     favorite_food = forms.CharField(max_length=30, required=True, help_text='Required')
     favorite_holiday = forms.CharField(max_length=30, required=True, help_text='Required')
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'favorite_book', 'favorite_food')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'favorite_book', 'favorite_food', 'favorite_holiday', 'age', 'height', 'weight', 'position')
 
 class ResetPasswordForm(forms.Form):
     username = forms.CharField(max_length=30, required=True, help_text="Required")
