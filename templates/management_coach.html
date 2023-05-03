@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<button type="submit" class="btn btn-outline-danger btn-sm" onclick="window.location.href='{% url 'all_players' %}'">View All My Players</button>
   <h1>Team List</h1>
   <ul>
   {% for team in teams %}
@@ -8,7 +9,10 @@
       <li>
         <strong>Team:</strong> {{ team.name }}<br>
         <strong>Coach:</strong> {{ team.coach }}<br>
-        <strong>Players:</strong> {{ team.players.all|join:", " }}<br>
+        <strong>Players:</strong>  {% for player in team.players.all %}
+        <a href="{% url 'player_profile_ForCoach' username=player.user.username %}">{{ player.user.username }}</a>{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+       <br>
       </li>
     {% endif %}
   {% endfor %}

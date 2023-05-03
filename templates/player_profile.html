@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div style="margin-left: 50px;">
+    <h1>{{ user.username }}'s Profile</h1>
+    <p><strong>First Name:</strong> {{ user.first_name }}</p>
+    <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+    <p><strong>Age:</strong> {{ profile.age }}</p>
+    <p><strong>Height:</strong> {{ profile.height }}</p>
+    <p><strong>Weight:</strong> {{ profile.weight }}</p>
+    <p><strong>Position:</strong> {{ profile.position }}</p>
+    <p><strong>Role:</strong> {{ profile.usertype }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Due Payment:</strong> {{ profile.due_payment }}</p>
+    <p><strong>Monthly Payment:</strong> {{ profile.monthly_payment }}</p>
+  </div>
+{% endblock %}
