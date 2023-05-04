@@ -1,4 +1,4 @@
-function rotateFunction(){
+function rotateFunction() {
     var min = 1024;
     var max = 9999;
     var deg = Math.floor(Math.random() * (max - min)) + min;
@@ -6,6 +6,12 @@ function rotateFunction(){
     var element = document.getElementById('mainbox');
     element.classList.remove('animate');
     setTimeout(function(){
-        element.classList.add('animate');
-      }, 5000);
+      element.classList.add('animate');
+      var items = ["Nothing", "Nothing", "Nothing", "Nothing", "5%", "10%", "15%", "20%"];
+      var itemWon = items[Math.floor(deg%360/45)];
+      alert("Congratulations! You won " + itemWon + ".");
+      // reset the wheel position after spinning
+      document.getElementById('box').style.transform = "none";
+    }, 5000);
   }
+  

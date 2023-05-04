@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div>
+        <h1>Chatbot</h1>
+        <div>
+            <label for="prompt">Enter your message:</label>
+            <input type="text" id="prompt" name="prompt">
+            <button id="submit">Send</button>
+        </div>
+        <div id="message"></div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $("#submit").click(function() {
+                var prompt = $("#prompt").val();
+                $.ajax({
+                    type: "POST",
+                    url: "/chatbot/",
+                    data: {
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        prompt: prompt
+                    },
+                    success: function(response) {
+                        $("#message").text(response.message);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+{% endblock %}

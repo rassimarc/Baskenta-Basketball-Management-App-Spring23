@@ -140,39 +140,6 @@ def delete_account(request):
     return render(request, 'confirm_delete_account.html')
 
 
-from django.http import JsonResponse, HttpResponseBadRequest
-import openai
-
-def chat_view(request):
-    if request.method == 'POST':
-        form = ChatForm(request.POST)
-        if form.is_valid():
-            user_message = form.cleaned_data['message']
-            # Get the user's message from the request
-
-            # Set up the OpenAI API key
-            openai.api_key = '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'
-
-            # Use the OpenAI API to generate a response
-            response = openai.Completion.create(
-                engine='davinci',
-                prompt=user_message,
-                max_tokens=60,
-                n=1,
-                stop=None,
-                temperature=0.5,
-            )
-
-            # Extract the generated text from the response
-            chat_response = response.choices[0].text.strip()
-
-            # Return the response as a JSON object
-            return render(request, 'chat.html', {'response': chat_response})
-    else:
-        form = ChatForm()
-    return render(request, 'chat.html', {'form': form})
-
-
 def forgot_password(request):
     if request.method == 'POST':
         form = ResetPasswordForm(request.POST)
@@ -192,23 +159,7 @@ def forgot_password(request):
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 
-def add_team(request):
-    submitted = False
-    if request.method == "POST":
-        form = TeamFormAdmin(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            if Team.objects.filter(name=name).exists():
-                form.add_error('name', 'A team with this name already exists.')
-            else:
-                form.save()
-                return redirect('management')    
-    else:
-        form = TeamFormAdmin()
-        if 'submitted' in request.GET:
-            submitted = True
 
-    return render(request, 'add_team.html', {'form': form, 'submitted': submitted})
 
 def update_team(request, team_name):
 	team = Team.objects.get(name=team_name)
@@ -364,37 +315,52 @@ def accept_request(request, username):
     user.profile.save()
     return redirect("management")
 
-from django.http import JsonResponse, HttpResponseBadRequest
-import openai
 
-def chat_view(request):
-    if request.method == 'POST':
-        form = ChatForm(request.POST)
+def add_team(request):
+    submitted = False
+    if request.method == "POST":
+        form = TeamFormAdmin(request.POST)
         if form.is_valid():
-            user_message = form.cleaned_data['message']
-            # Get the user's message from the request
-
-            # Set up the OpenAI API key
-            openai.api_key = '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'
-
-            # Use the OpenAI API to generate a response
-            response = openai.Completion.create(
-                engine='davinci',
-                prompt=user_message,
-                max_tokens=60,
-                n=1,
-                stop=None,
-                temperature=0.5,
-            )
-
-            # Extract the generated text from the response
-            chat_response = response.choices[0].text.strip()
-
-            # Return the response as a JSON object
-            return render(request, 'chat.html', {'response': chat_response})
+            name = form.cleaned_data['name']
+            if Team.objects.filter(name=name).exists():
+                form.add_error('name', 'A team with this name already exists.')
+            else:
+                form.save()
+                return redirect('management')    
     else:
-        form = ChatForm()
-    return render(request, 'chat.html', {'form': form})
+        form = TeamFormAdmin()
+        if 'submitted' in request.GET:
+            submitted = True
+
+    return render(request, 'add_team.html', {'form': form, 'submitted': submitted})
+
+
+ #           openai.api_key = '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'
+
+import openai
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+
+# Set up the OpenAI API key
+openai.api_key = "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"
+
+# Define the ChatGPT view
+@csrf_exempt
+def chatbot(request):
+    if request.method == "POST":
+        prompt = request.POST.get("prompt")
+        response = openai.Completion.create(
+            engine="davinci",
+            prompt=prompt,
+            max_tokens=1024,
+            n=1,
+            stop=None,
+            temperature=0.5,
+        )
+        message = response.choices[0].text.strip()
+        return JsonResponse({"message": message})
+    return render(request, "chatbot.html")
 
 
 from django.shortcuts import render
@@ -421,3 +387,39 @@ def spin_the_wheel(request):
         spin_result = "nothing"
 
     return render(request, 'spin_the_wheel.html', {'player': top_player, 'spin_result': spin_result, 'used_spin': used_spin})
+
+def compare_teams(request):
+    teams = Team.objects.all()
+    if request.method == 'POST':
+        team1 = request.POST.get('team1')
+        team2 = request.POST.get('team2')
+        
+        # Get the average player rating for each team
+        team1_players = Player.objects.filter(team=team1)
+        team1_rating_avg = team1_players.aggregate(Avg('rating'))['rating__avg']
+        team2_players = Player.objects.filter(team=team2)
+        team2_rating_avg = team2_players.aggregate(Avg('rating'))['rating__avg']
+        
+        # Get the number of games won and total games played for each team
+        team1_wins = Game.objects.filter(winner=team1).count()
+        team1_total = Game.objects.filter(Q(team1=team1) | Q(team2=team1)).count()
+        team2_wins = Game.objects.filter(winner=team2).count()
+        team2_total = Game.objects.filter(Q(team1=team2) | Q(team2=team2)).count()
+        
+        # Calculate the average win rate for each team
+        team1_win_rate = team1_wins / team1_total
+        team2_win_rate = team2_wins / team2_total
+        
+        # Calculate the overall team score based on player ratings and win rate
+        value1 = team1_rating_avg * team1_win_rate
+        value2 = team2_rating_avg * team2_win_rate
+        
+        # Determine the winning team based on the overall team score
+        if value1 > value2:
+            result = team1
+        else:
+            result = team2
+        
+        return render(request, 'compare_teams_result.html', {'result': result, 'teams':teams})
+    else:
+        return render(request, 'compare_teams.html', {'teams':teams})

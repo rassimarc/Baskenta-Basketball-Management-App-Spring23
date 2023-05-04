@@ -1,0 +1,16 @@
+<form method="post" action="{% url 'compare_teams' %}">
+    {% csrf_token %}
+    <label for="team1">Team 1:</label>
+    <select name="team1" id="team1">
+        {% for team in teams %}
+        <option value="{{ team.id }}">{{ team.name }}</option>
+        {% endfor %}
+    </select>
+    <label for="team2">Team 2:</label>
+    <select name="team2" id="team2">
+        {% for team in teams %}
+        <option value="{{ team.id }}">{{ team.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Compare teams">
+</form>

@@ -34,6 +34,7 @@ urlpatterns = [
     path('not_accepted/', views.not_accepted, name="not_accepted"),
     path('accept_request/<str:username>/', views.accept_request, name='accept_request'),
     path('reject_request/<str:username>/', views.reject_request, name='reject_request'),
-    path('chat/', views.chat_view, name='chat'),
+    path('chatbot/', views.chatbot, name='chatbot'),
     path('spin-the-wheel/', views.spin_the_wheel, name='spin_the_wheel'),
+    path('compare-teams/', views.compare_teams, name='compare_teams'),
 ]

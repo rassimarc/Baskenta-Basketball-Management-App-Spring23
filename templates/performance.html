@@ -4,6 +4,7 @@
   <h1>Statistics List</h1>
   <a href="{% url 'add_stat' %}">Create stat</a>
   <a href="{% url 'spin_the_wheel' %}">Spin_the_wheel</a>
+  <a href="{% url 'compare_teams' %}">Predict results</a> 
   <ul>
   {% for stat in stats %}
     <li>
