@@ -1,7 +1,10 @@
 {% extends 'performance_coach.html' %}
 
 {% block content %}
-
+<head>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'performance_coach.css' %}">
+  </head>
 {% if user.is_authenticated %}
 	<h1>Add Stat</h1>
 <br/><br/>
@@ -17,7 +20,8 @@
 			{{ form.as_p }}
 
 			<input type="submit" value="Submit" class="btn btn-secondary">
-			<button type="button" onclick="window.location.href='{% url 'performance' %}'">Cancel</button>
+			<a href="{% url 'performance' %}" class="btn">Cancel</a>
+
 
 
 		</form>

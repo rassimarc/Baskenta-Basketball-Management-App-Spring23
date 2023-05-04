@@ -5,19 +5,24 @@
 {% endblock %}
 {% block content %}
 <head>
+  {% load static %}
 <meta name="viewport" content="width=device-width, initial-scale=1">
 {% load static %}
   <link rel="stylesheet"  href="{% static 'chat_home_style.css' %}">
 </head>
 <div class ='bb'>
+  
 <body>
 
-<div align="center">
-    <h2>Baskenta Chat</h2>
-</div>
+  <div class="chat">
+    <img src="{% static 'chat_pic.jpg' %}" class="img-fluid" alt="ChatGPT Image" >
+  </div> 
+
+
 
 
 <div class="container">
+  <h2>Baskenta Chat</h2>
     <style>
     input[type=text], select {
     width: 100%;

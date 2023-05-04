@@ -23,11 +23,11 @@
           </div>
           
         </div>
-        <h2>Signup as amanger</h2>
+        <h2>Signup as manager</h2>
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="button">Signup</button>
-        <button type="button" onclick="window.location.href='{% url 'login' %}'">Cancel</button>
+        <button type="submit" class="button" onclick="window.location.href='{% url 'login' %}'">Cancel</button>
         
       </form>
       

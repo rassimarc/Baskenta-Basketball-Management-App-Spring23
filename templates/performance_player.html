@@ -1,25 +1,46 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Your Statistic</h1>
-  <ul>
-    {% for stat in stats %}
-    {% if stat.name.user.username == user.username %}
-      <li>
-        <strong>Name:</strong> {{ stat.name }}<br>
-        <strong>Position:</strong> {{ stat.position }}<br>
-        <strong>Points per game (PPG):</strong> {{ stat.PPG }}<br>
-        <strong>Rebounds per game (RPG):</strong> {{ stat.RPG }}<br>
-        <strong>Assists per game (APG):</strong> {{ stat.APG }}<br>
-        <strong>Steals per game (SPG):</strong> {{ stat.SPG }}<br>
-        <strong>Blocks per game (BPG):</strong> {{ stat.BPG }}<br>
-        <strong>Turnovers per game (TOVPG):</strong> {{ stat.TOVPG }}<br>
-        <strong>Minutes per game (MPG):</strong> {{ stat.MPG }}<br>
-        <strong>Rating:</strong> {{ stat.rating }}<br>
-
-    </li>
-    {% endif %}
-  {% endfor %}
-
-  </ul>
+  <head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'performance_player.css' %}">
+  </head>
+  <div class="container">
+    <h1 class="heading">Your Statistics</h1>
+    <div class="table-container">
+      <table class="stats-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>PPG</th>
+            <th>RPG</th>
+            <th>APG</th>
+            <th>SPG</th>
+            <th>BPG</th>
+            <th>TOVPG</th>
+            <th>MPG</th>
+            <th>Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for stat in stats %}
+            {% if stat.name.user.username == user.username %}
+              <tr>
+                <td>{{ stat.name }}</td>
+                <td>{{ stat.position }}</td>
+                <td>{{ stat.PPG }}</td>
+                <td>{{ stat.RPG }}</td>
+                <td>{{ stat.APG }}</td>
+                <td>{{ stat.SPG }}</td>
+                <td>{{ stat.BPG }}</td>
+                <td>{{ stat.TOVPG }}</td>
+                <td>{{ stat.MPG }}</td>
+                <td>{{ stat.rating }}</td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
 {% endblock %}

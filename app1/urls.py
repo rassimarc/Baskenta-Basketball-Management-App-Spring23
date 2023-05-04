@@ -48,6 +48,6 @@ urlpatterns = [
     path('add_game/', views.add_game, name='add_game'),
     path('update_game/<int:games_id>/', views.update_game, name='update_game'),
     path('delete_game/<int:games_id>/', views.delete_game, name='delete_game'),
-    
+    path('spin-the-wheel/', views.spin_the_wheel, name='spin-the-wheel')
 
 ]

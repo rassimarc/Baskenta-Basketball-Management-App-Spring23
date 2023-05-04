@@ -1,22 +1,63 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Statistics List</h1>
-  <ul>
-  {% for stat in stats %}
-    <li>
-      <strong>Name:</strong> {{ stat.name }}<br>
-      <strong>Position:</strong> {{ stat.position }}<br>
-      <strong>Points per game (PPG):</strong> {{ stat.PPG }}<br>
-      <strong>Rebounds per game (RPG):</strong> {{ stat.RPG }}<br>
-      <strong>Assists per game (APG):</strong> {{ stat.APG }}<br>
-      <strong>Steals per game (SPG):</strong> {{ stat.SPG }}<br>
-      <strong>Blocks per game (BPG):</strong> {{ stat.BPG }}<br>
-      <strong>Turnovers per game (TOVPG):</strong> {{ stat.TOVPG }}<br>
-      <strong>Minutes per game (MPG):</strong> {{ stat.MPG }}<br>
-      <strong>Rating:</strong> {{ stat.rating }}<br>
-    </li>
-  {% endfor %}
+<head>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'performance_coach.css' %}">
+</head>
+  <h1>Player Statistics:</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Position</th>
+        <th>PPG</th>
+        <th>RPG</th>
+        <th>APG</th>
+        <th>SPG</th>
+        <th>BPG</th>
+        <th>TOVPG</th>
+        <th>MPG</th>
+        <th>Rating</th>
+        {% if user.is_authenticated %}
+        {% endif %}
+      </tr>
+    </thead>
+    <tbody>
+    {% for stat in stats %}
+      <tr>
+        <td>{{ stat.name }}</td>
+        <td>{{ stat.position }}</td>
+        <td>{{ stat.PPG }}</td>
+        <td>{{ stat.RPG }}</td>
+        <td>{{ stat.APG }}</td>
+        <td>{{ stat.SPG }}</td>
+        <td>{{ stat.BPG }}</td>
+        <td>{{ stat.TOVPG }}</td>
+        <td>{{ stat.MPG }}</td>
+        <td class="{% if stat.rating >= 8 %}text-success{% elif stat.rating >= 6 %}text-warning{% else %}text-danger{% endif %}">{{ stat.rating }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 
-  </ul>
+  <h1>Game Records:</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Team 1</th>
+        <th>Team 2</th>
+        <th>Winner</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for game in games %}
+      <tr>
+        <td>{{ game.Team1 }}</td>
+        <td>{{ game.Team2 }}</td>
+        <td>{{ game.Winner }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <head>
+    <title>Movie Selector</title>
+    {% load static %}
+    <link href="{% static 'style.css' %}" rel="stylesheet" type="text/css" />
+  </head>
+  <body> 
+  <div id="mainbox" class="mainbox">
+    <div id="box" class="box">
+      <div class="box1">
+        <span class="span1"><b>5%</b></span>
+        <span class="span2"><b>10%</b></span>
+        <span class="span3"><b>15%</b></span>
+        <span class="span4"><b>20%</b></span>
+      </div>
+      <div class="box2">
+        <span class="span1"><b>Nothing</b></span>
+        <span class="span2"><b>Nothing</b></span>
+        <span class="span3"><b>Nothing</b></span>
+        <span class="span4"><b>Nothing</b></span>
+      </div>
+    </div> 
+    <button class="spin" onclick="rotateFunction()">SPIN</button>
+  </div>
+  {% load static %}
+  <script src="{% static 'script.js' %}"></script>
+
+  </body>
+{% endblock %}

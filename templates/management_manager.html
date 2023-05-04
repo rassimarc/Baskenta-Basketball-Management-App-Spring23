@@ -1,35 +1,124 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
-<button type="submit" class="btn btn-outline-danger btn-sm" onclick="window.location.href='{% url 'all_profiles' %}'">View All Members</button><br><br>
-<button type="submit" class="btn btn-outline-danger btn-sm" onclick="window.location.href='{% url 'aid_requests' %}'">View Financial Aid Requests</button>
-<h1>End of Month</h1>
-<form action="{% url 'end_of_month' %}" method="post">
-  {% csrf_token %}
-  <button type="submit" class="btn btn-primary" id="end-of-month-btn">End Of Month</button>
-</form>
+
+
+<head>
+<style>
+.button {
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 2px 1px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+
+.button1 {
+  background-color: white;
+  color: black;
+  border: 2px solid #96270F;
+}
+
+.button1:hover {
+  background-color: #96270F;
+  color: white;
+}
+
+.button2 {
+  background-color: white;
+  color: black;
+  border: 2px solid #271815;
+}
+
+.button2:hover {
+  background-color: #271815;
+  color: white;
+}
+
+.button3 {
+  background-color: white;
+  color: black;
+  border: 3px solid #92EE0D ;
+}
+
+.button3:hover {
+  background-color: #92EE0D ;
+  color: white;
+}
+.button4 {
+  background-color: white;
+  color: black;
+  border: 3px solid #EC4545 ;
+}
+
+.button4:hover {
+  background-color: #EC4545 ;
+  color: white;
+}
+</style>
+<div style="display: flex;">
+  <button type="submit" class="button button1" onclick="window.location.href='{% url 'all_profiles' %}'">View All Members</button>
+  <button type="submit" class="button button1" onclick="window.location.href='{% url 'aid_requests' %}'" style="margin-left: 10px; margin-right: 10px;">View Financial Aid Requests</button>
+  <form action="{% url 'end_of_month' %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="button button2" id="end-of-month-btn" style="margin-left: 10px;">End Of Month</button>
+  </form>
+</div>
+
 
   
-<h1>Team List</h1>
-  <a href="{% url 'add_team' %}">Create Team</a>
-  <ul>
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 8px;
+}
+</style>
+</head>
+<body>
+
+<h2>Team List</h2>
+<button type="button" class="button button1" onclick="window.location.href='{% url 'add_team' %}'">Create Team</button>
+<h2>          </h2>
+<table style="width:100%">
+  <tr>
+    <th>Team Name</th>
+    <th>Coach</th>
+    <th>Players</th>
+    <th>Actions</th>
+  </tr>
   {% for team in teams %}
-    <li>
-      <strong>Team:</strong> {{ team.name }}<br>
-      <strong>Coach:</strong> {{ team.coach }}<br>
-      <strong>Players:</strong> 
-      {% for player in team.players.all %}
-        <a href="{% url 'player_profile' username=player.user.username %}">{{ player.user.get_username }}</a>{% if not forloop.last %}, {% endif %}
-      {% endfor %}<br>
+    <tr>
+      <td>{{ team.name }}</td>
+      <td>{{ team.coach }}</td>
+      <td>
+        {% for player in team.players.all %}
+          <a href="{% url 'player_profile' username=player.user.username %}">{{ player.user.get_username }}</a>{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      </td>
       {% if user.is_authenticated %}
-      <div class="card-footer text-muted">
-        <a href="{% url 'delete_team' team.name %}" class="btn btn-outline-danger btn-sm">Delete Team</a>            
-        <a href="{% url 'update_team' team.name %}" class="btn btn-outline-danger btn-sm">Edit Team</a> 
-      </div>
+      <td>
+        <a href="{% url 'delete_team' team.name %}" class="btn btn-outline-danger btn-sm">Delete</a>            
+        <a href="{% url 'update_team' team.name %}" class="btn btn-outline-danger btn-sm">Edit</a> 
+      </td>
       {% endif %}
-    </li>
+    </tr>
   {% endfor %}
-  </ul>
+</table>
+
+</body>
+</html>
+
   <h1>List of requests</h1>
   <ul>
   {% for signup_request in signup_requests %}
@@ -41,8 +130,8 @@
         {% csrf_token %}
         <label for="due_amount">Enter due amount:</label>
         <input type="number" id="due_amount" name="due_amount" required min="0" max="1000000"><br><br>
-        <button type="submit" class="btn btn-outline-danger btn-sm">Accept request</button>
-        <button type="submit" class="btn btn-outline-danger btn-sm" formaction="{% url 'reject_request' username=signup_request.player.get_username %}">Reject request</button>
+        <button type="submit" class="button button3">Accept request</button>
+        <button type="submit" class="button button4" formaction="{% url 'reject_request' username=signup_request.player.get_username %}">Reject request</button>
       </form>
     </li>
   {% endfor %}
@@ -58,4 +147,5 @@
     });
   </script>
   
-{% endblock %}
+{% endblock %} 
+

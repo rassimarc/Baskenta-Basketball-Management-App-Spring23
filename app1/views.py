@@ -79,7 +79,7 @@ def performance(request):
     if request.user.profile.usertype == "Coach":
         return render(request, 'performance_coach.html', {'stats':stats,'games':games})
     if request.user.profile.usertype == "Manager":
-        return render(request, 'performance_player.html', {'stats':stats,'games':games})
+        return render(request, 'performance_manager.html', {'stats':stats,'games':games})
         
 def signup_player(request):
     if request.method == 'POST':
@@ -513,3 +513,28 @@ def delete_game(request, games_id):
             return redirect("performance")    
 
     return render(request, 'confirm_delete_game.html')
+
+from django.shortcuts import render
+from .models import Stats
+import random
+
+def spin_the_wheel(request):
+    # Get all players' stats
+    player_stats = Stats.objects.all()
+
+    # Find the player with the highest rating
+    top_player = max(player_stats, key=lambda p: p.stat1)
+
+    # Check if the user has already spun the wheel
+    used_spin = request.session.get('used_spin', False)
+
+    # Randomly decide whether to give a discount or not
+    spin_result = None
+    spin_outcomes = ["nothing", "nothing", "nothing", "10% off", "5% off", "15% off"]
+    if random.random() < 0.5 and not used_spin:
+        spin_result = random.choice(spin_outcomes)
+        request.session['used_spin'] = True
+    else:
+        spin_result = "nothing"
+
+    return render(request, 'spin_the_wheel.html', {'player': top_player, 'spin_result': spin_result, 'used_spin': used_spin})

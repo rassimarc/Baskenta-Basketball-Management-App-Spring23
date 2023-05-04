@@ -1,13 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<head>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'performance_coach.css' %}">
+  </head>
+
   <h1>Update {{stats.name}} stats</h1>
   <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
 
-    <button type="submit">Update Statistics</button>
-    <button type="button" onclick="window.location.href='{% url 'performance' %}'">Cancel</button>
+    <button type="submit" class="btn">Update Statistics</button>
+			<a href="{% url 'performance' %}" class="btn">Cancel</a>
 
   </form>
 {% endblock %}
