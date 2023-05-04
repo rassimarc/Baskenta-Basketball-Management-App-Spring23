@@ -11,17 +11,18 @@
     </div>
     
     <div class="login-form">
-      <div class="header">
-        <img src="{% static 'logo.png' %}" alt="Logo">
-        <div class="header-text">
-          <h1>Baskenta</h1>
-          <p>Basketball Management Club</p>
-          
-        </div>
-        
-      </div>
+     
       
       <form method="post">
+        <div class="header">
+          <img src="{% static 'logo.png' %}" alt="Logo">
+          <div class="header-text">
+            <h1>Baskenta</h1>
+            <p>Basketball Management Club</p>
+            
+          </div>
+          
+        </div>
         <h2>Login</h2>
         {% csrf_token %}
         {{ form.as_p }}
@@ -34,7 +35,6 @@
           <p> Forgot your password? <a href="{% url 'forgotpassword' %}" >Reset your password</a></p>
         </div> 
       </form>
-      
       
     </div>
   </div>

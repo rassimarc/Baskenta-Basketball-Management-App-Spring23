@@ -1,14 +1,38 @@
-{% extends 'base.html' %}
+<head>
+  {% load static %}
+  <link rel="stylesheet"  href="{% static 'signup_style.css' %}">
+</head>
+<body>
+  
+  <div class="login-container">
+    
+    <div class="login-image">
+      <img src="{% static 'login_picture.png' %}" alt="Login Image">
+    </div>
+    
+    <div class="login-form">
+     
+      
+      <form method="post">
+        <div class="header">
+          <img src="{% static 'logo.png' %}" alt="Logo">
+          <div class="header-text">
+            <h1>Baskenta</h1>
+            <p>Basketball Management Club</p>
+            
+          </div>
+          
+        </div>
+        <h2>Signup as player</h2>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button">Signup</button>
+        <button type="button" onclick="window.location.href='{% url 'login' %}'">Cancel</button>
+        
+      </form>
+      
+    </div>
+  </div>
+</body>
 
-{% block title %}Signup{% endblock %}
-
-{% block content %}
-  <h1>Signup as player</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Signup</button>
-    <button type="button" onclick="window.location.href='{% url 'login' %}'">Cancel</button>
-  </form>
-{% endblock %}
 
