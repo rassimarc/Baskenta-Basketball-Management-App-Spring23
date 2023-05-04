@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Financial Aid Form</h1>
+
+<form method="post">
+  {% csrf_token %}
+
+  <!-- Player Information -->
+  <h2>Player Information</h2>
+  <label for="player_name">Full Name:</label><br>
+  <input type="text" name="player_name" id="player_name" value="{{ request.user.get_full_name }}" required readonly><br><br>
+  
+  <label for="player_username">Username:</label><br>
+  <input type="text" name="player_username" id="player_username" value="{{ request.user.get_username }}" required readonly><br><br>
+  
+  <label for="player_age">Age:</label><br>
+  <input type="number" name="player_age" id="player_age" min="1" max="99" required><br><br>
+  
+  <label for="player_email">Email:</label><br>
+  <input type="email" name="player_email" id="player_email" value="{{ request.user.email }}" required readonly><br><br>
+
+  <!-- Financial Aid Information -->
+  <h2>Financial Aid Information</h2>
+  <label for="annual_income">Annual Income:</label><br>
+  <input type="number" name="annual_income" id="annual_income" min="1" max="100000000" required><br><br>
+  
+  <label for="family_size">Family Size:</label><br>
+  <input type="number" name="family_size" id="family_size" min="1" max="20" required><br><br>
+  
+  <label for="reason">Reason for Financial Aid:</label><br>
+  <textarea name="reason" id="reason" rows="5" cols="30" required></textarea><br><br>
+  
+  <!-- Submit Button -->
+  <input type="submit" value="Submit">
+
+</form>
+<br><br><br><br><br><br><br>
+{% endblock %}

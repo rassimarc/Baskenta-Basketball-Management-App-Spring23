@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<head>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'performance_coach.css' %}">
+</head>
+  <h1>Confirm Statistics Deletion</h1>
+  <h2>Are you sure you want to delete the statistics of this player?</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" name="confirm" value="yes" onclick="return confirm('Are you sure you want to delete the statistics of this player?')" class="btn">Delete</button>
+    <a href="{% url 'performance' %}" class="btn">Cancel</a>
+  </form>
+{% endblock %}

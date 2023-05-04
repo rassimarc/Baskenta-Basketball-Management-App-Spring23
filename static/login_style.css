@@ -12,22 +12,20 @@
       font-size: 2em;
       text-align: center;
       margin-top: 0px;
+
     }
     
     /* Style for the form */
     form {
-      width: 400px;
-      margin: 0 auto;
+      width: auto;
+ 
       background-color: #fff;
       border: 1px solid #ccc;
-      padding-left: 100px;
-      padding-right: 100px;
-      padding-top:100px;
-      padding-bottom: 200px;
+      padding:200;
       border-radius: 5px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
-    
+  
     /* Style for the form labels */
     label {
       display: block;
@@ -50,7 +48,7 @@
     button[type="submit"], a.button {
       display: block;
       width: 100%;
-      background-color: darkred;
+      background-color: black;
       color: #fff;
       border: none;
       border-radius: 3px;
@@ -68,12 +66,13 @@
     .signup-links {
       text-align: center;
       margin-top: 20px;
+      
     }
     
     .signup-links a {
       display: inline-block;
-      background-color: darkred;
-      border: 1px solid darkred;
+      background-color: black;
+      border: 1px solid black;
       color:white;
       padding: 10px 20px;
       border-radius: 3px;
@@ -85,7 +84,7 @@
     }
     
     .signup-links a:hover {
-      background-color: darkred;
+      background-color: black;
       color: #fff;
       text-decoration: none;
     }

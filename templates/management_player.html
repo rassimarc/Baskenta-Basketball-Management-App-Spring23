@@ -1,21 +1,111 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<head>
+<style>
+.button {
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 2px 1px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+
+.button1 {
+  background-color: white;
+  color: black;
+  border: 2px solid #96270F;
+}
+
+.button1:hover {
+  background-color: #96270F;
+  color: white;
+}
+
+.button2 {
+  background-color: white;
+  color: black;
+  border: 2px solid #271815;
+}
+
+.button2:hover {
+  background-color: #271815;
+  color: white;
+}
+
+.button3 {
+  background-color: white;
+  color: black;
+  border: 3px solid #92EE0D ;
+}
+
+.button3:hover {
+  background-color: #92EE0D ;
+  color: white;
+}
+.button4 {
+  background-color: white;
+  color: black;
+  border: 3px solid #EC4545 ;
+}
+
+.button4:hover {
+  background-color: #EC4545 ;
+  color: white;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 8px;
+}
+</style>
+</head>
+
 <h1>Payment</h1>
-<p> Due payment: {{ due_payment }} </p> 
-<a href="{% url 'payment' %}">Pay</a>
-<h1>Team List</h1>
-  <ul>
+<p> Due payment: {{ user.profile.due_payment }} </p> 
+<p> Monthly payment: {{ user.profile.monthly_payment }} </p>
+<div style="display: flex;">
+  <button type="submit" class="button button2" onclick="window.location.href='{% url 'payment' %}'">Pay</button>
+  <button type="submit" class="button button1" onclick="window.location.href='{% url 'financial_aid' %}'">Request Financial Aid</button>
+</div>
+
+<h1>Teams and Players</h1>
+
+<table style="width:70%">
+  <tr>
+    <th>Team Name</th>
+    <th>Coach</th>
+    <th>Players</th>
+  </tr>
+
   {% for team in teams %}
-    {% for player in team.players.all %}
-      {% if player.user.username == user.username %}
-        <li>
-          <strong>Team:</strong> {{ team.name }}<br>
-          <strong>Coach:</strong> {{ team.coach }}<br>
-          <strong>Players:</strong> {{ team.players.all|join:", " }}<br>
-        </li>
-      {% endif %}
-    {% endfor %} 
-  {% endfor %}
-  </ul>
+      
+{% for player in team.players.all %}
+  {% if player.user.username == user.username %}
+    <td>{{ team.name }}</td>
+    <td>{{ team.coach }}</td>
+    <td>
+      {% for player in team.players.all %}
+          {{ player.user.get_username}} 
+      {% endfor %}
+    </td>
+  {% endif %}
+{% endfor %}
+
+            
+          {% endfor %}
+        </td>
+      </tr>
+   
+ 
+</table>
+
 {% endblock %}

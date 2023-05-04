@@ -1,0 +1,39 @@
+{% extends 'performance_coach.html' %}
+
+{% block content %}
+<head>
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'performance_coach.css' %}">
+  </head>
+{% if user.is_authenticated %}
+	<h1>Add Game</h1>
+<br/><br/>
+
+{% if submitted %}
+		Your stats Was Submitted Succefully
+
+	{% else %}
+
+		<form action="" method=POST>
+			{% csrf_token %}
+
+			{{ form.as_p }}
+
+			<input type="submit" value="Submit" class="btn btn-secondary">
+			<a href="{% url 'performance' %}" class="btn">Cancel</a>
+
+
+		</form>
+		{% endif %}
+
+<br/><br/>	
+
+{% else %}
+<h1>Sorry! You Must Be Logged In To View This Page...</h1>
+
+<a href="{% url 'login' %}">Login Here</a>
+
+{% endif %}
+
+
+{% endblock %}

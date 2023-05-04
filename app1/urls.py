@@ -4,7 +4,8 @@ from . import views
 
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', views.login_view, name='login'),
+    path('home/', views.home, name='home'),
     path('aboutus/', views.aboutus, name='aboutus'),
     path('schedule/', views.schedule, name='schedule'),
     path('chat/', views.chat_home, name='communication'),
@@ -29,10 +30,24 @@ urlpatterns = [
     path('add_event/', views.add_event, name='add_event'), 
     path('update/', views.update, name='update'),
     path('remove/', views.remove, name='remove'),
-    path('add_stat/', views.add_stat, name='add_stat'),
-    path('update_stat/<str:stats_name>/', views.update_stat, name='update_stat'),
     path('payment/', views.payment, name='payment'),
     path('not_accepted/', views.not_accepted, name="not_accepted"),
     path('accept_request/<str:username>/', views.accept_request, name='accept_request'),
     path('reject_request/<str:username>/', views.reject_request, name='reject_request'),
+    path('player_profile/<str:username>/', views.player_profile, name='player_profile'),
+    path('all_profiles/', views.all_profiles, name='all_profiles'),
+    path('all_players/', views.all_players, name='all_players'),
+    path('player_profile_ForCoach/<str:username>/', views.player_profile_ForCoach, name='player_profile_ForCoach'),
+    path('end_of_month/', views.end_of_month, name='end_of_month'),
+    path('financial_aid/', views.financial_aid, name='financial_aid'),
+    path('aid_requests/', views.aid_requests, name='aid_requests'),
+    path('accept_aid_request/<int:request_id>/', views.accept_aid_request, name='accept_aid_request'),
+    path('add_stat/', views.add_stat, name='add_stat'),
+    path('update_stat/<int:stats_id>/', views.update_stat, name='update_stat'),
+    path('delete_stat/<int:stats_id>/', views.delete_stat, name='delete_stat'),
+    path('add_game/', views.add_game, name='add_game'),
+    path('update_game/<int:games_id>/', views.update_game, name='update_game'),
+    path('delete_game/<int:games_id>/', views.delete_game, name='delete_game'),
+    path('spin-the-wheel/', views.spin_the_wheel, name='spin-the-wheel')
+
 ]

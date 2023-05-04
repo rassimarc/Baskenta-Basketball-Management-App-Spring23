@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'performance_player.css' %}">
+  </head>
+  <div class="container">
+    <h1 class="heading">Your Statistics</h1>
+    <div class="table-container">
+      <table class="stats-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Position</th>
+            <th>PPG</th>
+            <th>RPG</th>
+            <th>APG</th>
+            <th>SPG</th>
+            <th>BPG</th>
+            <th>TOVPG</th>
+            <th>MPG</th>
+            <th>Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for stat in stats %}
+            {% if stat.name.user.username == user.username %}
+              <tr>
+                <td>{{ stat.name }}</td>
+                <td>{{ stat.position }}</td>
+                <td>{{ stat.PPG }}</td>
+                <td>{{ stat.RPG }}</td>
+                <td>{{ stat.APG }}</td>
+                <td>{{ stat.SPG }}</td>
+                <td>{{ stat.BPG }}</td>
+                <td>{{ stat.TOVPG }}</td>
+                <td>{{ stat.MPG }}</td>
+                <td>{{ stat.rating }}</td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+{% endblock %}

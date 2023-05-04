@@ -6,7 +6,7 @@
 
   <main>
     <section class="hero">
-      <h2>Join Our Basketball Management Club Today</h2>
+      <h2>Join Our Basketball Management Club Today!</h2>
       <p>Our club offers a variety of services to help you manage your basketball team, from organizing games and tournaments to tracking stats and more.</p>
       <a href="{% url 'aboutus' %}" class="cta">Learn More</a>
     </section>
@@ -18,7 +18,6 @@
         <li>Stat Tracking and Analysis</li>
         <li>Team Communication and Collaboration</li>
         <li>Training and Coaching Programs</li>
-        <li>Community and Networking Opportunities</li>
       </ul>
     </section>
     <section class="testimonials">
@@ -47,4 +46,143 @@
   <footer>
     <p>&copy; 2023 Basketball Management Club</p>
   </footer>
+
+  <style>
+    /* go to the extreme in the homepage design */
+    body {
+      background-color: #f2f2f2;
+      font-family: 'Roboto', sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2em 1em;
+    }
+
+    h2 {
+      font-size: 2.5em;
+      font-weight: 300;
+      margin: 0 0 0.5em;
+    }
+
+    h3 {
+      font-size: 1.5em;
+      font-weight: 300;
+      margin: 0 0 0.5em;
+    }
+
+    p {
+      margin: 0 0 1em;
+    }
+
+    a {
+      color: darkred;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      background-color: grey;
+      color: #fff;
+      padding: 2em;
+      text-align: center;
+    }
+
+    .hero h2 {
+      color: #fff;
+    }
+
+    .hero p {
+      color: #fff;
+    }
+
+    .features {
+      background-color: #fff;
+      padding: 2em;
+      text-align: center;
+    }
+
+    .features ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      color: darkred;    }
+
+    .features li {
+      border-bottom: 1px solid #f2f2f2;
+      padding: 1em 0;
+    }
+
+    .testimonials {
+      background-color: #f2f2f2;
+      padding: 2em;
+      text-align: center;
+    }
+
+    .testimonials blockquote {
+      font-style: italic;
+      margin: 0 0 1em;
+    }
+
+    .join {
+      background-color: #fff;
+      padding: 2em;
+      text-align: center;
+    }
+
+    .social {
+      background-color: #f2f2f2;
+      padding: 2em;
+      text-align: center;
+    }
+
+    .social ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .social li {
+      display: inline-block;
+      margin: 0 1em;
+    }
+
+    footer {
+      background-color: darkred;
+      color: #fff;
+      padding: 2em;
+      text-align: center;
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    .cta {
+      background-color: #fff;
+      border: 1px solid darkred;
+      border-radius: 4px;
+      color: darkred;
+      display: inline-block;
+      font-size: 1em;
+      font-weight: 300;
+      margin: 0 0 1em;
+      padding: 1em 2em;
+      text-decoration: none;
+    }
+
+    .cta:hover {
+      background-color: darkred;
+      color: #fff;
+    }
+
+  </style>
 {% endblock %}
+

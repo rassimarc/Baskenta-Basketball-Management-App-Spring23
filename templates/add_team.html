@@ -1,36 +1,87 @@
 {% extends 'management_manager.html' %}
 
 {% block content %}
+<head>
+<style>
+.button {
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 2px 1px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
 
+
+.button1 {
+  background-color: white;
+  color: black;
+  border: 2px solid #96270F;
+}
+
+.button1:hover {
+  background-color: #96270F;
+  color: white;
+}
+
+.button2 {
+  background-color: white;
+  color: black;
+  border: 2px solid #271815;
+}
+
+.button2:hover {
+  background-color: #271815;
+  color: white;
+}
+
+.button3 {
+  background-color: white;
+  color: black;
+  border: 3px solid #92EE0D ;
+}
+
+.button3:hover {
+  background-color: #92EE0D ;
+  color: white;
+}
+.button4 {
+  background-color: white;
+  color: black;
+  border: 3px solid #EC4545 ;
+}
+
+.button4:hover {
+  background-color: #EC4545 ;
+  color: white;
+}
+</style>
 {% if user.is_authenticated %}
 	<h1>Add Team</h1>
-<br/><br/>
-
-{% if submitted %}
-		Your Team Was Submitted Succefully
-
+	<br/><br/>
+	{% if submitted %}
+		Your Team Was Submitted Successfully
 	{% else %}
-
 		<form action="" method=POST>
 			{% csrf_token %}
 
 			{{ form.as_p }}
-
-			<input type="submit" value="Submit" class="btn btn-secondary">
-			<button type="button" onclick="window.location.href='{% url 'management' %}'">Cancel</button>
-
+                        <h1>             </h1>
+			<input type="submit" value="Submit" class="button button3">
+			<button type="button" onclick="window.location.href='{% url 'management' %}'" class="button button4">Cancel</button>
 
 		</form>
-		{% endif %}
+	{% endif %}
 
-<br/><br/>	
+	<br/><br/>
 
 {% else %}
-<h1>Sorry! You Must Be Logged In To View This Page...</h1>
-
-<a href="{% url 'login' %}">Login Here</a>
-
+	<h1>Sorry! You Must Be Logged In To View This Page...</h1>
+	<a href="{% url 'login' %}">Login Here</a>
 {% endif %}
-
 
 {% endblock %}

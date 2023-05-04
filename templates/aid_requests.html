@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <h1>List of Financial Aid Requests</h1>
+  <style>
+    table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 5px;
+  text-align: center;
+}
+
+th {
+  font-weight: bold;
+}
+
+input[type="number"] {
+  width: 70px;
+}
+
+  </style>
+  <table class="request-table">
+    <thead>
+      <tr>
+        <th>Full Name</th>
+        <th>Username</th>
+        <th>Age</th>
+        <th>Email</th>
+        <th>Annual Income</th>
+        <th>Family Size</th>
+        <th>Reason for Financial Aid</th>
+        <th>Status</th>
+        <th>Accept/Reject</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for request in aid_requests %}
+        <tr class="request-row">
+          <td>{{ request.player_name }}</td>
+          <td><a href="{% url 'player_profile' username=request.player_username %}">{{ request.player_username }}</a></td>
+          <td>{{ request.player_age }}</td>
+          <td>{{ request.player_email }}</td>
+          <td>{{ request.annual_income }}</td>
+          <td>{{ request.family_size }}</td>
+          <td>{{ request.reason }}</td>
+          <td>{{ request.status }}</td>
+          <td>
+            {% if request.status != "accepted" %} 
+            <form method="POST" action="{% url 'accept_aid_request' request_id=request.id %}" id="accept_aid_form_{{ request.id }}">
+              {% csrf_token %}
+              <label for="percent_aid_{{ request.id }}">Percentage of Financial Aid:</label>
+              <input type="number" id="percent_aid_{{ request.id }}" name="percent_aid" min="0" max="100"><br><br>
+              <button type="submit" name="accept" value="accept" onclick="validateForm(event, {{ request.id }})">Accept</button>
+              <button type="submit" name="reject" value="reject">Reject</button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <script>
+    function validateForm(event, requestId) {
+      var percent_aid_field = document.getElementById("percent_aid_" + requestId);
+      var reject_button = document.getElementsByName("reject")[0];
+      if (percent_aid_field.value != "" && reject_button.clicked) {
+        alert("You cannot accept a request with a filled percentage field and a rejected status.");
+        event.preventDefault();
+      }
+      else if (percent_aid_field.value == "" && !reject_button.clicked) {
+        alert("Please fill in the percentage of financial aid before accepting the request.");
+        event.preventDefault();
+      }
+    }
+    document.getElementsByName("reject")[0].addEventListener("click", function() {
+      var formId = this.form.id;
+      var requestId = formId.substring(formId.lastIndexOf("_") + 1);
+      document.getElementById("percent_aid_" + requestId).removeAttribute("required");
+    });
+  </script>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock %}

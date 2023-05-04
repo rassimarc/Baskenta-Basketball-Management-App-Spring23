@@ -5,6 +5,10 @@
 {% endblock %}
 
 {% block content %}
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'performance_coach.css' %}">
+  </head>
     <h1>You haven't been accepted by a manager yet!</h1>
-    <a href="{% url 'login' %}">Try again</a>
+    <a href="{% url 'login' %}" class="btn">Try again</a>
 {% endblock %}
